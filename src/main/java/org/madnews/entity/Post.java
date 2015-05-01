@@ -2,11 +2,7 @@ package org.madnews.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
 
-/**
- * Created by andrey.bereza on 29.04.2015.
- */
 
 @Entity
 @Table(name = "posts")
@@ -24,10 +20,10 @@ public class Post {
     private String content;
 
     @Column
-    private String big_img;
+    private String bigImg;
 
     @Column
-    private String small_img;
+    private String smallImg;
 
     @Column
     private int rating;
@@ -67,20 +63,20 @@ public class Post {
         this.timestamp = timestamp;
     }
 
-    public String getBig_img() {
-        return big_img;
+    public String getBigImg() {
+        return bigImg;
     }
 
-    public void setBig_img(String big_img) {
-        this.big_img = big_img;
+    public void setBigImg(String bigImg) {
+        this.bigImg = bigImg;
     }
 
-    public String getSmall_img() {
-        return small_img;
+    public String getSmallImg() {
+        return smallImg;
     }
 
-    public void setSmall_img(String small_img) {
-        this.small_img = small_img;
+    public void setSmallImg(String smallImg) {
+        this.smallImg = smallImg;
     }
 
     public int getRating() {

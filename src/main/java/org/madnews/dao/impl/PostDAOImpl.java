@@ -5,14 +5,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.madnews.dao.PostDAO;
 import org.madnews.entity.Post;
+import org.madnews.utils.HibernateUtils;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 public class PostDAOImpl implements PostDAO{
-
-    @Resource(name="sessionFactory")
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
     private Session session;
 
     @Override

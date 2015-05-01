@@ -10,7 +10,5 @@
         <property name="connection.password">postgres</property>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
-
-        <mapping class="org.madnews.entity.User" />
     </session-factory>
 </hibernate-configuration>
