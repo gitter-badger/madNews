@@ -3,9 +3,7 @@ package org.madnews.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-/**
- * Created by andrey on 4/26/2015.
- */
+
 @Entity
 @Table(name = "users")
 public class User {
