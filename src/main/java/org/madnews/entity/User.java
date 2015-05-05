@@ -5,13 +5,12 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class User {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name="increment", strategy="increment")
+    @GeneratedValue
     private int id;
 
     @Column(name="FIRSTNAME")

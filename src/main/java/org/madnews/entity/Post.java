@@ -4,12 +4,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "posts")
+@Table(name = "POSTS")
 public class Post {
+
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(generator = "increment")
-    @GenericGenerator(name="increment", strategy="increment")
+    @GeneratedValue
     private int id;
 
     @Column

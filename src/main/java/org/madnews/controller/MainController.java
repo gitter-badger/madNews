@@ -1,6 +1,6 @@
 package org.madnews.controller;
 
-import org.madnews.dao.PostDAO;
+import org.madnews.service.Service;
 import org.madnews.entity.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +14,13 @@ import java.util.List;
 @Controller
 @RequestMapping(value="/api/v1/public/")
 public class MainController {
-    @Resource(name = "postDAO")
-    private static PostDAO postDAO;
+    @Resource(name = "service")
+    private static Service service;
 
     @RequestMapping(value = "api/v1/public/posts", method = RequestMethod.GET)
     @ResponseBody
     public String getNews(Model model){
-        List<Post> posts = postDAO.getPosts();
+        List<Post> posts = service.getPosts();
         String json = "";
         String postJson;
         for(Post post: posts){
