@@ -21,7 +21,7 @@ public class ServiceImplTest extends TestCase {
         post.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         System.out.println(post.getId());
         System.out.println(post.getTitle());
-        service.addPost(post);
+        //service.addPost(post);
 
     }
 }

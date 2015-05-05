@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("org.madnews")
+@ComponentScan("org.madnews.controller")
 public class WebAppConfig {
 
     @Bean
@@ -21,7 +21,7 @@ public class WebAppConfig {
         // указываем где будут лежать наши веб-страницы
         resolver.setPrefix("/");
         // формат View который мы будем использовать
-        resolver.setSuffix(".jsp");
+        resolver.setSuffix(".html");
         resolver.setViewClass(JstlView.class);
         return resolver;
     }

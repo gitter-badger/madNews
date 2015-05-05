@@ -18,12 +18,12 @@ public class Initializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        // регистрируем конфигурацию созданую высше
+        // register configuration
         ctx.register(WebAppConfig.class);
-        // добавляем в контекст слушателя с нашей конфигурацией
+        // add listener
         servletContext.addListener(new ContextLoaderListener(ctx));
         ctx.setServletContext(servletContext);
-        // настраиваем маппинг Dispatcher Servlet-а
+        // configure mapping Dispatcher Servlet
         ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER_SERVLET_NAME, new DispatcherServlet(ctx));
         servlet.addMapping("/api/v1/public/");
         servlet.setLoadOnStartup(1);

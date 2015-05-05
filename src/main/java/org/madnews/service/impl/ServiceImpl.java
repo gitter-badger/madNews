@@ -3,12 +3,10 @@ package org.madnews.service.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.madnews.entity.Post;
 import org.madnews.entity.User;
 import org.madnews.service.Service;
 import org.madnews.utils.HibernateUtil;
-
 import java.util.List;
 
 public class ServiceImpl implements Service {
