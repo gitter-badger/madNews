@@ -1,0 +1,3 @@
+/*C3*/SET SCHEMA PUBLIC
+INSERT INTO POSTS VALUES(0,'title 1                                           ','<html><body>Some Content</body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ','/image/id_small.jpeg                              ','/image/id_big.jpeg                                ',3,1430837521)
+COMMIT
