@@ -2,31 +2,33 @@ package org.madnews.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "POSTS")
-public class Post {
+public class Post{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "ID")
     private int id;
 
-    @Column
+    @Column(name = "TITLE")
     private String title;
 
-    @Column
+    @Column(name = "CONTENT")
     private String content;
 
-    @Column
-    private String bigImg;
-
-    @Column
+    @Column(name = "SMALLIMG")
     private String smallImg;
 
-    @Column
+    @Column(name = "BIGIMG")
+    private String bigImg;
+
+    @Column(name = "RATING")
     private int rating;
 
-    @Column
+    @Column(name = "TIMESTAMP")
     private int timestamp;
 
     public int getId() {
@@ -53,12 +55,12 @@ public class Post {
         this.content = content;
     }
 
-    public int getTimestamp() {
-        return (int) (System.currentTimeMillis() / 1000L);
+    public String getSmallImg() {
+        return smallImg;
     }
 
-    public void setTimestamp(int timestamp) {
-        this.timestamp = timestamp;
+    public void setSmallImg(String smallImg) {
+        this.smallImg = smallImg;
     }
 
     public String getBigImg() {
@@ -69,19 +71,19 @@ public class Post {
         this.bigImg = bigImg;
     }
 
-    public String getSmallImg() {
-        return smallImg;
-    }
-
-    public void setSmallImg(String smallImg) {
-        this.smallImg = smallImg;
-    }
-
     public int getRating() {
         return rating;
     }
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public int getTimestamp() {
+        return (int) (System.currentTimeMillis() / 1000L);
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -8,7 +8,6 @@ import java.util.List;
 public interface Service {
     void addPost(Post post);
     List<Post> getPosts();
-
     void addUser(User user);
     User getUser(Integer id);
     List<User> getUsers();
