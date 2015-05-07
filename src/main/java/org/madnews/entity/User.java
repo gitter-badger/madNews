@@ -1,15 +1,16 @@
 package org.madnews.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "USERS")
-public class User {
+public class User implements Serializable{
 
     @Id
     @Column(name = "ID")
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(name="FIRSTNAME")
     private String firstname;
@@ -26,11 +27,11 @@ public class User {
     @Column(name = "ROLE")
     private int role;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

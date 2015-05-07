@@ -4,26 +4,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.JstlView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-/**
- * Created by andrey.bereza on 29.04.2015.
- */
+
 @Configuration
 @EnableWebMvc
 @ComponentScan("org.madnews.controller")
 public class WebAppConfig {
 
-    @Bean
-    public UrlBasedViewResolver setupViewResolver() {
-        UrlBasedViewResolver resolver = new UrlBasedViewResolver();
-        // указываем где будут лежать наши веб-страницы
-        resolver.setPrefix("/");
-        // формат View который мы будем использовать
-        resolver.setSuffix(".html");
-        resolver.setViewClass(JstlView.class);
-        return resolver;
+    @Bean(name = "viewResolver")
+    public InternalResourceViewResolver getViewResolver() {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/");
+        viewResolver.setSuffix(".jsp");
+        return viewResolver;
     }
 }
-

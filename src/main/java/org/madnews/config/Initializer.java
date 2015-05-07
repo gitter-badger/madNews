@@ -9,9 +9,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-/**
- * Created by andrey.bereza on 29.04.2015.
- */
 public class Initializer implements WebApplicationInitializer {
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
 

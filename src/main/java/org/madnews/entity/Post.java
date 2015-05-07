@@ -1,17 +1,16 @@
 package org.madnews.entity;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "POSTS")
-public class Post{
+public class Post implements Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "ID")
-    private int id;
+    private Long id;
 
     @Column(name = "TITLE")
     private String title;
@@ -31,11 +30,11 @@ public class Post{
     @Column(name = "TIMESTAMP")
     private int timestamp;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -80,7 +79,7 @@ public class Post{
     }
 
     public int getTimestamp() {
-        return (int) (System.currentTimeMillis() / 1000L);
+        return timestamp;
     }
 
     public void setTimestamp(int timestamp) {
