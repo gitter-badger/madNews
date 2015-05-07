@@ -1,28 +1,25 @@
 package org.madnews.config;
 
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
 
-public class Initializer implements WebApplicationInitializer {
-    private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
+public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        // register configuration
-        ctx.register(WebAppConfig.class);
-        // add listener
-        servletContext.addListener(new ContextLoaderListener(ctx));
-        ctx.setServletContext(servletContext);
-        // configure mapping Dispatcher Servlet
-        ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER_SERVLET_NAME, new DispatcherServlet(ctx));
-        servlet.addMapping("/api/v1/public/");
-        servlet.setLoadOnStartup(1);
+    protected Class<?>[] getRootConfigClasses() {
+        System.out.println("Initializer -> getRootConfigClasses:  Inicio");
+        return new Class[] {RootConfig.class };
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        System.out.println("Initializer -> getServletConfigClasses:  Inicio");
+        return new Class<?>[] { WebAppConfig.class };
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        System.out.println("Initializer -> getServletMappings:  Inicio");
+        return new String[] { "/api/v1/public/" };
     }
 }

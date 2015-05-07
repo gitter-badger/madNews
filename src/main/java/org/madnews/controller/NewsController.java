@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value="/api/v1/public/")
-public class MainController {
+public class NewsController {
     
     private static PostService postService;
 

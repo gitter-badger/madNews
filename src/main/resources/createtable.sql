@@ -8,7 +8,6 @@ CREATE TABLE posts
   rating int,
   timestamp int
 );
-
 CREATE TABLE users
 (
   id int IDENTITY,
