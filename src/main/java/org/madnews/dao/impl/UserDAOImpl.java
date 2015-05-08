@@ -12,43 +12,43 @@ import java.util.List;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+
     @Autowired
     private SessionFactory sessionFactory;
-    private Session session;
+
+    protected Session getSession() {
+        return sessionFactory.getCurrentSession();
+    }
 
     @Override
     public List getUsers() {
-        session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from User");
+        Query query = getSession().createQuery("from User");
         return query.list();
     }
 
     @Override
     public void create(User entry) {
-        session = sessionFactory.getCurrentSession();
-        session.save(entry);
+        getSession().save(entry);
     }
 
     @Override
     public User read(Long id) {
-        return (User)session.get(User.class, id);
+        return (User)getSession().get(User.class, id);
     }
 
     @Override
     public void update(User entry) {
-        session = sessionFactory.getCurrentSession();
-        User user = (User)session.get(User.class, entry.getId());
+        User user = (User)getSession().get(User.class, entry.getId());
         user.setFirstname(entry.getFirstname());
         user.setLastname(entry.getLastname());
         user.setEmail(entry.getEmail());
         user.setPassword(entry.getPassword());
         user.setRole(entry.getRole());
-        session.save(user);
+        getSession().save(user);
     }
 
     @Override
     public void delete(User entry) {
-        session = sessionFactory.getCurrentSession();
-        session.delete(entry);
+        getSession().delete(entry);
     }
 }

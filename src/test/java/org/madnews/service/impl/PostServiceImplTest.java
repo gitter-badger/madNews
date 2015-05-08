@@ -20,7 +20,7 @@ public class PostServiceImplTest extends TestCase {
     private PostService postService;
 
     @Test
-    public void testAddAndGetPost() throws Exception {
+    public void testCreateAndReadPost() throws Exception {
         Post post = new Post();
         post.setTitle("title 2");
         post.setContent("<html><body>Some Content</body></html>");
@@ -34,14 +34,24 @@ public class PostServiceImplTest extends TestCase {
     }
 
     @Test
-    public void testGetAndUpdatePost() throws Exception {
-        Long id = new Long(1);
+    public void testReadAndUpdatePost() throws Exception {
+        Long id = Long.valueOf(1);
         String newTitle = "new title";
         Post post = postService.readPost(id); //retrieve post by id from DB
         assertNotNull(post);
         post.setTitle(newTitle);
         postService.updatePost(post);
         post = postService.readPost(id);
-        assertEquals(newTitle, post.getTitle());
+        assertEquals(newTitle, post.getTitle().trim());
+    }
+
+    public void testCreateAndDeletePost() throws Exception{
+        Post post = new Post();
+        assertNotNull(post);
+        Long postId = post.getId();
+        postService.createPost(post);
+        postService.deletePost(post);
+        Post deletedPost = postService.readPost(postId);
+        assertNull(deletedPost);
     }
 }
