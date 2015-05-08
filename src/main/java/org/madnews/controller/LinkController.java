@@ -1,23 +1,7 @@
 package org.madnews.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
-@Controller
+/**
+ * Created by andrey.bereza on 08.05.2015.
+ */
 public class LinkController {
-    @RequestMapping(value="/")
-    public ModelAndView mainPage() {
-        return new ModelAndView("index");
-    }
-
-    @RequestMapping(value="/index")
-    public ModelAndView indexPage() {
-        return new ModelAndView("index");
-    }
-    @RequestMapping(value="/newpost")
-    public ModelAndView newPostPage() {
-        return new ModelAndView("newpost");
-    }
-
 }
