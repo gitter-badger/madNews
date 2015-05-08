@@ -5,7 +5,6 @@ import org.madnews.entity.Post;
 import org.madnews.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
