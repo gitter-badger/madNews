@@ -45,13 +45,13 @@ public class PostServiceImplTest extends TestCase {
         assertEquals(newTitle, post.getTitle().trim());
     }
 
+    @Test
     public void testCreateAndDeletePost() throws Exception{
         Post post = new Post();
         assertNotNull(post);
         Long postId = post.getId();
         postService.createPost(post);
         postService.deletePost(post);
-        Post deletedPost = postService.readPost(postId);
-        assertNull(deletedPost);
+        assertNull(postId);
     }
 }

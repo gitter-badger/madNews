@@ -1,17 +1,6 @@
-/*C2*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C3*/SET SCHEMA PUBLIC
-INSERT INTO POSTS VALUES(5,'title 2                                           ','<html><body>Some Content</body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ','/image/id_small.jpeg                              ','/image/id_big.jpeg                                ',3,1431089340)
-COMMIT
-DISCONNECT
-/*C4*/SET SCHEMA PUBLIC
-DISCONNECT
 /*C5*/SET SCHEMA PUBLIC
 DISCONNECT
 /*C6*/SET SCHEMA PUBLIC
-DELETE FROM POSTS WHERE ID=1
-INSERT INTO POSTS VALUES(1,'new title                                         ','<html><body>Some Content</body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ','/image/id_small.jpeg                              ','/image/id_big.jpeg                                ',3,1430900860)
-COMMIT
 DISCONNECT
 /*C7*/SET SCHEMA PUBLIC
 DISCONNECT

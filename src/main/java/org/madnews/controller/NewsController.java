@@ -16,9 +16,8 @@ public class NewsController {
     @Autowired
     private PostService postService;
 
-    @RequestMapping(value = "/posts", method = RequestMethod.GET, headers="Accept=application/json")
-    @ResponseBody
-    public List getPosts(){
+    @RequestMapping(value = "/posts", method = RequestMethod.GET)
+    public @ResponseBody List getPosts(){
         return postService.getPosts();
     }
 }
