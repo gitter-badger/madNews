@@ -2,6 +2,7 @@ package org.madnews.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "POSTS")
@@ -9,26 +10,36 @@ public class Post implements Serializable{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column
     private Long id;
 
-    @Column(name = "TITLE")
+    @Column
     private String title;
 
-    @Column(name = "CONTENT")
+    @Column
     private String content;
 
-    @Column(name = "SMALLIMG")
+    @Column
     private String smallImg;
 
-    @Column(name = "BIGIMG")
+    @Column
     private String bigImg;
 
-    @Column(name = "RATING")
+    @Column
     private int rating;
 
-    @Column(name = "TIMESTAMP")
+    @Column
+    private boolean isTopNews;
+
+    @Column
     private int timestamp;
+
+    @ManyToMany
+    @JoinTable(name="posts_tags",
+            joinColumns = @JoinColumn(name="postid", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name="tagid", referencedColumnName="id")
+    )
+    private Set<Tag> tags;
 
     public Long getId() {
         return id;
@@ -84,5 +95,21 @@ public class Post implements Serializable{
 
     public void setTimestamp(int timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isTopNews() {
+        return isTopNews;
+    }
+
+    public void setIsTopNews(boolean isTopNews) {
+        this.isTopNews = isTopNews;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

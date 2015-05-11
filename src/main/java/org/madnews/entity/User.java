@@ -8,24 +8,25 @@ import java.io.Serializable;
 public class User implements Serializable{
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue
+    @Column
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @Column(name="FIRSTNAME")
+    @Column
     private String firstname;
 
-    @Column(name = "LASTNAME")
+    @Column
     private String lastname;
 
-    @Column(name = "EMAIL")
+    @Column
     private String email;
 
-    @Column(name = "PASSWORD")
+    @Column
     private String password;
 
-    @Column(name = "ROLE")
-    private int role;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id", nullable = false)
+    private Role role;
 
     public Long getId() {
         return id;
@@ -67,11 +68,12 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public int getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Role role) {
         this.role = role;
     }
+
 }
