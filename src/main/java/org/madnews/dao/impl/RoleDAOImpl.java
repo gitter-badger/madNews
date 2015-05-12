@@ -5,7 +5,9 @@ import org.hibernate.SessionFactory;
 import org.madnews.dao.RoleDAO;
 import org.madnews.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class RoleDAOImpl implements RoleDAO {
 
     @Autowired
@@ -29,7 +31,7 @@ public class RoleDAOImpl implements RoleDAO {
     public void update(Role entry) {
         Role roleFromDB = (Role) getSession().get(Role.class, entry.getId());
         roleFromDB.setName(entry.getName());
-        roleFromDB.setUser(entry.getUser());
+        roleFromDB.setUsers(entry.getUsers());
     }
 
     @Override

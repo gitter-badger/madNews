@@ -5,7 +5,9 @@ import org.hibernate.SessionFactory;
 import org.madnews.dao.TagDAO;
 import org.madnews.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class TagDAOImpl implements TagDAO {
 
     @Autowired

@@ -1,6 +1,7 @@
 package org.madnews.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "REF_ROLES")
@@ -13,8 +14,8 @@ public class Role {
     @Column
     private String name;
 
-    @OneToOne(optional = false, mappedBy="role")
-    private User user;
+    @OneToMany(mappedBy="role")
+    private Set<User> users;
 
     public Long getId() {
         return id;
@@ -32,11 +33,11 @@ public class Role {
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 }

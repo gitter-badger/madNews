@@ -25,8 +25,8 @@ public class User implements Serializable{
     @Column
     private String password;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name="roleid", unique = true, nullable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "roleid")
     private Role role;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
