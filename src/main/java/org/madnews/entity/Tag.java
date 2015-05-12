@@ -1,21 +1,22 @@
 package org.madnews.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table( name = "REF_TAGS")
-public class Tag {
+@Table(name = "REF_TAGS")
+public class Tag implements Serializable {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column
-    @GeneratedValue
     private Long id;
 
     @Column
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags")
     private Set<Post> posts;
 
     public Long getId() {

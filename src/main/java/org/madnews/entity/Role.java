@@ -1,14 +1,16 @@
 package org.madnews.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "REF_ROLES")
-public class Role {
+public class Role implements Serializable {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column
     private Long id;
 
     @Column

@@ -38,7 +38,7 @@ public class Post implements Serializable{
     @Column
     private int timestamp;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="posts_tags",
             joinColumns = @JoinColumn(name="postid", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name="tagid", referencedColumnName="id")

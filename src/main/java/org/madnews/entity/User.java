@@ -9,8 +9,8 @@ import java.util.Set;
 public class User implements Serializable{
 
     @Id
-    @Column
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column
     private Long id;
 
     @Column
@@ -25,11 +25,11 @@ public class User implements Serializable{
     @Column
     private String password;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "roleid")
     private Role role;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private Set<Post> posts;
 
     public Long getId() {
