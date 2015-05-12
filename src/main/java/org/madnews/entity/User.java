@@ -2,6 +2,7 @@ package org.madnews.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -24,9 +25,12 @@ public class User implements Serializable{
     @Column
     private String password;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", nullable = false)
+    @OneToOne(optional = false)
+    @JoinColumn(name="roleid", unique = true, nullable = false, updatable = false)
     private Role role;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<Post> posts;
 
     public Long getId() {
         return id;
@@ -74,6 +78,14 @@ public class User implements Serializable{
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
     }
 
 }

@@ -44,9 +44,11 @@ public class PostDAOImpl implements PostDAO {
         postFromDb.setSmallImg(entry.getSmallImg());
         postFromDb.setBigImg(entry.getBigImg());
         postFromDb.setRating(entry.getRating());
-        postFromDb.setIsTopNews(entry.isTopNews());
-        postFromDb.setTimestamp(entry.getTimestamp());
         postFromDb.setTags(entry.getTags());
+        postFromDb.setIsTopNews(entry.isTopNews());
+        postFromDb.setUser(entry.getUser());
+        postFromDb.setTimestamp(entry.getTimestamp());
+
         getSession().save(postFromDb);
     }
 

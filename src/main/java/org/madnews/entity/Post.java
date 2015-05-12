@@ -31,6 +31,10 @@ public class Post implements Serializable{
     @Column
     private boolean isTopNews;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "userid", nullable = false)
+    private User user;
+
     @Column
     private int timestamp;
 
@@ -89,14 +93,6 @@ public class Post implements Serializable{
         this.rating = rating;
     }
 
-    public int getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(int timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public boolean isTopNews() {
         return isTopNews;
     }
@@ -112,4 +108,22 @@ public class Post implements Serializable{
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
+    }
+
+
 }

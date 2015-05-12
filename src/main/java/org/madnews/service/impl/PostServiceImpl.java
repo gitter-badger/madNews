@@ -30,7 +30,6 @@ public class PostServiceImpl implements PostService {
         postDAO.update(post);
     }
 
-
     @Override
     public void deletePost(Post post) {
         postDAO.delete(post);

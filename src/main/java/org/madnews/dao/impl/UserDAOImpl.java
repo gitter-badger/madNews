@@ -44,6 +44,7 @@ public class UserDAOImpl implements UserDAO {
         user.setEmail(entry.getEmail());
         user.setPassword(entry.getPassword());
         user.setRole(entry.getRole());
+        user.setPosts(entry.getPosts());
         getSession().save(user);
     }
 

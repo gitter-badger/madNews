@@ -6,6 +6,7 @@ CREATE TABLE POSTS (
   bigimg CHAR(50),
   rating INT DEFAULT 3,
   istopnews BOOLEAN DEFAULT FALSE,
+  userid INT NOT NULL,
   timestamp INT NOT NULL
 );
 CREATE TABLE USERS (
@@ -29,3 +30,14 @@ CREATE TABLE REF_TAGS (
   id INT IDENTITY,
   name CHAR(50) NOT NULL
 );
+
+INSERT INTO REF_ROLES(name) VALUES ('admin');
+INSERT INTO REF_ROLES(name) VALUES ('writer');
+INSERT INTO REF_ROLES(name) VALUES ('author');
+INSERT INTO REF_ROLES(name) VALUES ('corrector');
+
+INSERT INTO REF_TAGS(name) VALUES ('music');
+INSERT INTO REF_TAGS(name) VALUES ('art');
+INSERT INTO REF_TAGS(name) VALUES ('sport');
+
+

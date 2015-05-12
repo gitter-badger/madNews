@@ -3,7 +3,7 @@ package org.madnews.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "REF_ROLEs")
+@Table(name = "REF_ROLES")
 public class Role {
 
     @Id
@@ -13,7 +13,7 @@ public class Role {
     @Column
     private String name;
 
-    @OneToOne
+    @OneToOne(optional = false, mappedBy="role")
     private User user;
 
     public Long getId() {
