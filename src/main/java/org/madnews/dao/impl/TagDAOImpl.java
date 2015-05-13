@@ -8,6 +8,7 @@ import org.madnews.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -16,7 +17,7 @@ public class TagDAOImpl implements TagDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    protected Session getSession() {
+    private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -47,5 +48,10 @@ public class TagDAOImpl implements TagDAO {
     public Set<Post> getPostsByTagId(Long id) {
         Tag tag = (Tag) getSession().get(Tag.class, id);
         return tag.getPosts() ;
+    }
+
+    @Override
+    public List getTags() {
+        return getSession().createQuery("from Tag").list();
     }
 }

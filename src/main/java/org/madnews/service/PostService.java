@@ -8,5 +8,6 @@ public interface PostService {
     Post readPost(Long id);
     void updatePost(Post post);
     void deletePost(Post post);
-    List<Post> getPosts();
+    List getPosts();
+    Post getTodayTopNews();
 }

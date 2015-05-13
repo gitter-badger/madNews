@@ -1,11 +1,5 @@
 package org.madnews.config;
 
-import javax.annotation.Resource;
-import javax.sql.DataSource;
-
-import org.madnews.dao.PostDAO;
-import org.madnews.dao.impl.PostDAOImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +10,8 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration

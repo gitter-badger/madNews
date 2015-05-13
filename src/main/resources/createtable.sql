@@ -1,19 +1,20 @@
 CREATE TABLE POSTS (
   id INT IDENTITY,
-  title CHAR(50),
-  content CHAR(500),
-  smallimg CHAR(50),
-  bigimg CHAR(50),
+  title CHAR(30),
+  content CHAR(300),
+  smallimg CHAR(20),
+  bigimg CHAR(20),
   rating INT DEFAULT 3,
   istopnews BOOLEAN DEFAULT FALSE,
   userid INT NOT NULL,
-  timestamp INT NOT NULL
+  date DATE DEFAULT CURRENT_DATE,
+  time TIME DEFAULT CURRENT_TIME
 );
 CREATE TABLE USERS (
   id INT IDENTITY,
-  firstname CHAR(50),
-  lastname CHAR(50),
-  email CHAR(50) NOT NULL,
+  firstname CHAR(20),
+  lastname CHAR(20),
+  email CHAR(20) NOT NULL,
   password CHAR(30) NOT NULL,
   roleid INT NOT NULL
 );
@@ -24,11 +25,11 @@ CREATE TABLE POSTS_TAGS (
 );
 CREATE TABLE REF_ROLES (
   id INT IDENTITY,
-  name CHAR(50) NOT NULL
+  name CHAR(20) NOT NULL
 );
 CREATE TABLE REF_TAGS (
   id INT IDENTITY,
-  name CHAR(50) NOT NULL
+  name CHAR(30) NOT NULL
 );
 
 INSERT INTO REF_ROLES(name) VALUES ('admin');
@@ -39,5 +40,3 @@ INSERT INTO REF_ROLES(name) VALUES ('corrector');
 INSERT INTO REF_TAGS(name) VALUES ('music');
 INSERT INTO REF_TAGS(name) VALUES ('art');
 INSERT INTO REF_TAGS(name) VALUES ('sport');
-
-

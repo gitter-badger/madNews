@@ -16,7 +16,7 @@ public class PostDAOImpl implements PostDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    protected Session getSession() {
+    private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -24,6 +24,11 @@ public class PostDAOImpl implements PostDAO {
     public List readPosts() {
         Query query = getSession().createQuery("from Post");
         return query.list();
+    }
+
+    @Override
+    public Post getTodayTopNews() {
+        return (Post) getSession().createQuery("from Post where isTopNews=true and date=current_date").uniqueResult();
     }
 
     @Override
@@ -47,7 +52,8 @@ public class PostDAOImpl implements PostDAO {
         postFromDb.setTags(entry.getTags());
         postFromDb.setIsTopNews(entry.isTopNews());
         postFromDb.setUser(entry.getUser());
-        postFromDb.setTimestamp(entry.getTimestamp());
+        postFromDb.setDate(entry.getDate());
+        postFromDb.setTime(entry.getTime());
         getSession().save(postFromDb);
     }
 

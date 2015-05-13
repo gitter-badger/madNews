@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PostDAO extends GenericDAO<Post, Long>{
     List readPosts();
+    Post getTodayTopNews();
 }

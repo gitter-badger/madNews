@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.Set;
 
 @Entity
@@ -39,8 +41,11 @@ public class Post implements Serializable{
     @JsonBackReference
     private User user;
 
-    @Column
-    private int timestamp;
+    @Column(insertable=false)
+    private Date date;
+
+    @Column(insertable=false)
+    private Time time;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "POSTS_TAGS",
@@ -121,13 +126,19 @@ public class Post implements Serializable{
         this.user = user;
     }
 
-    public int getTimestamp() {
-        return timestamp;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTimestamp(int timestamp) {
-        this.timestamp = timestamp;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
+    public Time getTime() {
+        return time;
+    }
 
+    public void setTime(Time time) {
+        this.time = time;
+    }
 }

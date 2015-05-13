@@ -16,7 +16,7 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
-    protected Session getSession() {
+    private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 

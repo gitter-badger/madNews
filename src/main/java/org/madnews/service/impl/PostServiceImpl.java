@@ -2,13 +2,11 @@ package org.madnews.service.impl;
 
 import org.madnews.dao.PostDAO;
 import org.madnews.entity.Post;
-import org.madnews.entity.Tag;
 import org.madnews.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -38,7 +36,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPosts() {
+    public List getPosts() {
         return postDAO.readPosts();
+    }
+
+    @Override
+    public Post getTodayTopNews() {
+        return postDAO.getTodayTopNews();
     }
 }

@@ -2,6 +2,7 @@ package org.madnews.service;
 
 import org.madnews.entity.Tag;
 
+import java.util.List;
 import java.util.Set;
 
 public interface TagService {
@@ -10,4 +11,5 @@ public interface TagService {
     void updateTag(Tag tag);
     void deleteTag(Tag tag);
     Set getPostsByTagId(Long id);
+    List getTags();
 }

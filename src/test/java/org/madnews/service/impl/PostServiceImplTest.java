@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class PostServiceImplTest extends TestCase {
 
     @Test
     public void testCreateAndReadUser() throws Exception{
-        Long roleid = Long.valueOf(1);
+        Long roleid = (long) 1;
         Role role = roleService.readRole(roleid);
         User user = new User();
         user.setFirstname("first");
@@ -50,21 +51,20 @@ public class PostServiceImplTest extends TestCase {
 
     @Test
     public void testCreateAndReadPost() throws Exception {
-        User user = userService.getUser(Long.valueOf(0));
+        User user = userService.getUser((long) 0);
         Set<Tag> tags = new HashSet<>();
-        tags.add(tagService.readTag(Long.valueOf(0)));
-        tags.add(tagService.readTag(Long.valueOf(1)));
+        tags.add(tagService.readTag((long) 0));
+        tags.add(tagService.readTag((long) 1));
         ////////////////////
         Post post = new Post();
         post.setTitle("title");
         post.setContent("<html><body>Some Content</body></html>");
-        post.setSmallImg("/image/id_small.jpeg");
-        post.setBigImg("/image/id_big.jpeg");
+        post.setSmallImg("/images/small.jpeg");
+        post.setBigImg("/images/big.jpeg");
         post.setRating(3);
         post.setIsTopNews(true);
         post.setUser(user);
         post.setTags(tags);
-        post.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         postService.createPost(post);
         Post postFromDB = postService.readPost(post.getId());
         assertEquals(postFromDB.getTitle().trim(), post.getTitle());
@@ -72,7 +72,7 @@ public class PostServiceImplTest extends TestCase {
 
     @Test
     public void testReadAndUpdatePost() throws Exception {
-        Long id = Long.valueOf(1);
+        Long id = (long) 1;
         String newTitle = "new title";
         Post post = postService.readPost(id); //retrieve post by id from DB
         assertNotNull(post);

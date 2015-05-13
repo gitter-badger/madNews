@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -40,5 +41,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public Set<Post> getPostsByTagId(Long id) {
         return tagDAO.getPostsByTagId(id);
+    }
+
+    @Override
+    public List getTags() {
+        return tagDAO.getTags();
     }
 }
