@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value="/api/v1/public")
@@ -32,14 +33,15 @@ public class NewsController {
         return postService.readPost(id);
     }
 
-    @RequestMapping(value ="/users/{id}")
-    public User getUser(@PathVariable Long id){
-        return userService.getUser(id);
-    }
-
     @RequestMapping(value = "/news", method = RequestMethod.GET)
     public List getNews(){
         return postService.getPosts();
+    }
+
+
+    @RequestMapping(value ="/users/{id}")
+    public User getUser(@PathVariable Long id){
+        return userService.getUser(id);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -47,5 +49,8 @@ public class NewsController {
         return userService.getUsers();
     }
 
-
+    @RequestMapping(value ="/tags/{id}")
+    public Set getPostsByTagId(@PathVariable Long id){
+        return tagService.getPostsByTagId(id);
+    }
 }

@@ -1,7 +1,6 @@
 package org.madnews.service;
 
 import org.madnews.entity.Post;
-
 import java.util.List;
 
 public interface PostService {
@@ -10,5 +9,4 @@ public interface PostService {
     void updatePost(Post post);
     void deletePost(Post post);
     List<Post> getPosts();
-
 }

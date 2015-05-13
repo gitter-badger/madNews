@@ -48,7 +48,6 @@ public class PostDAOImpl implements PostDAO {
         postFromDb.setIsTopNews(entry.isTopNews());
         postFromDb.setUser(entry.getUser());
         postFromDb.setTimestamp(entry.getTimestamp());
-
         getSession().save(postFromDb);
     }
 

@@ -1,5 +1,7 @@
 package org.madnews.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -27,9 +29,11 @@ public class User implements Serializable{
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "roleid")
+    @JsonManagedReference
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<Post> posts;
 
     public Long getId() {

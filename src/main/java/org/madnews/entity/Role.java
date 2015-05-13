@@ -1,5 +1,7 @@
 package org.madnews.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -17,6 +19,7 @@ public class Role implements Serializable {
     private String name;
 
     @OneToMany(mappedBy="role")
+    @JsonBackReference
     private Set<User> users;
 
     public Long getId() {

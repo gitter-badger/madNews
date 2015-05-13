@@ -1,11 +1,14 @@
 package org.madnews.service.impl;
 
 import org.madnews.dao.TagDAO;
+import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Service
 @Transactional
@@ -32,5 +35,10 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteTag(Tag tag) {
         tagDAO.delete(tag);
+    }
+
+    @Override
+    public Set<Post> getPostsByTagId(Long id) {
+        return tagDAO.getPostsByTagId(id);
     }
 }

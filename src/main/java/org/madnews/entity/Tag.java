@@ -1,5 +1,7 @@
 package org.madnews.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -16,7 +18,8 @@ public class Tag implements Serializable {
     @Column
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy="tags")
+    @JsonBackReference
     private Set<Post> posts;
 
     public Long getId() {

@@ -1,5 +1,8 @@
 package org.madnews.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -33,16 +36,17 @@ public class Post implements Serializable{
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "userid", nullable = false)
+    @JsonBackReference
     private User user;
 
     @Column
     private int timestamp;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="posts_tags",
-            joinColumns = @JoinColumn(name="postid", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name="tagid", referencedColumnName="id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "POSTS_TAGS",
+            joinColumns={@JoinColumn(name="POSTID")},
+            inverseJoinColumns={@JoinColumn(name="TAGID")})
+    @JsonManagedReference
     private Set<Tag> tags;
 
     public Long getId() {

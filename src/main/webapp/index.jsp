@@ -8,7 +8,7 @@
 <a href="api/v1/public/news/0">Get one news</a><br>
 <a href="api/v1/public/news">Get all news</a><br>
 <a href="api/v1/public/users/0">Get one user</a><br>
-<a href="api/v1/public/users">Get all users</a>
-
+<a href="api/v1/public/users">Get all users</a><br>
+<a href="api/v1/public/tags/0">Get posts by tag id</a><br>
 </body>
 </html>

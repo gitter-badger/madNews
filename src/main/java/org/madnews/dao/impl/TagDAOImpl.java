@@ -3,9 +3,12 @@ package org.madnews.dao.impl;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.madnews.dao.TagDAO;
+import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.Set;
 
 @Repository
 public class TagDAOImpl implements TagDAO {
@@ -38,5 +41,11 @@ public class TagDAOImpl implements TagDAO {
     @Override
     public void delete(Tag entry) {
         getSession().delete(entry);
+    }
+
+    @Override
+    public Set<Post> getPostsByTagId(Long id) {
+        Tag tag = (Tag) getSession().get(Tag.class, id);
+        return tag.getPosts() ;
     }
 }

@@ -31,7 +31,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         mapper.registerModule(new Hibernate4Module());
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
-
     }
 
     @Override
