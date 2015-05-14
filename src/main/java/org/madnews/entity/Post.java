@@ -36,7 +36,7 @@ public class Post implements Serializable{
     @Column
     private boolean isTopNews;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "userid", nullable = false)
     @JsonBackReference
     private User user;
@@ -47,7 +47,7 @@ public class Post implements Serializable{
     @Column(insertable=false)
     private Time time;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "POSTS_TAGS",
             joinColumns={@JoinColumn(name="POSTID")},
             inverseJoinColumns={@JoinColumn(name="TAGID")})
