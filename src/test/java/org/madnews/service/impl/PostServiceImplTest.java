@@ -8,10 +8,10 @@ import org.madnews.entity.Post;
 import org.madnews.entity.Role;
 import org.madnews.entity.Tag;
 import org.madnews.entity.User;
-import org.madnews.service.PostService;
-import org.madnews.service.RoleService;
-import org.madnews.service.TagService;
-import org.madnews.service.UserService;
+import org.madnews.repository.PostRepository;
+import org.madnews.repository.RoleRepository;
+import org.madnews.repository.TagRepository;
+import org.madnews.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,41 +20,27 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.util.HashSet;
 import java.util.Set;
 
-@RunWith( SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RootConfig.class)
 @WebAppConfiguration
 public class PostServiceImplTest extends TestCase {
 
     @Autowired
-    private PostService postService;
+    private PostRepository postRepository;
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     @Autowired
-    private TagService tagService;
+    private TagRepository tagRepository;
     @Autowired
-    private RoleService roleService;
+    private RoleRepository roleRepository;
 
     @Test
-    public void testCreateAndReadUser() throws Exception{
-        Long roleid = (long) 0;
-        Role role = roleService.readRole(roleid);
-        User user = new User();
-        user.setFirstname("first");
-        user.setLastname("last");
-        user.setEmail("test@mail.com");
-        user.setPassword("123");
-        user.setRole(role);
-        userService.addUser(user);
-        assertNotNull(userService.getUser(user.getId()));
-    }
-
-    @Test
-    public void testCreateAndReadPost() throws Exception {
-        User user = userService.getUser((long) 0);
+    public void testAddPost() throws Exception{
+        User user = userRepository.findOne((long) 0);
         Set<Tag> tags = new HashSet<>();
-        tags.add(tagService.readTag((long) 0));
-        tags.add(tagService.readTag((long) 1));
-        ////////////////////
+        tags.add(tagRepository.findOne((long) 0));
+        tags.add(tagRepository.findOne((long) 1));
+        //////////////////////////////////////
         Post post = new Post();
         post.setTitle("title");
         post.setContent("<html><body>Some Content</body></html>");
@@ -64,33 +50,21 @@ public class PostServiceImplTest extends TestCase {
         post.setIsTopNews(true);
         post.setUser(user);
         post.setTags(tags);
-        postService.createPost(post);
-        Post postFromDB = postService.readPost(post.getId());
-        assertEquals(postFromDB.getTitle().trim(), post.getTitle());
+        postRepository.save(post);
     }
 
     @Test
-    public void testReadAndUpdatePost() throws Exception {
-        Long id = (long) 0;
-        String newTitle = "new title " + Math.random();
-        System.out.println("new title:" + newTitle);
-        Post post = postService.readPost(id); //retrieve post by id from DB
-        System.out.println("old title:" + post.getTitle());
-        assertNotNull(post);
-        post.setTitle(newTitle);
-        postService.updatePost(post);
-        post = postService.readPost(id);
-        assertEquals(newTitle, post.getTitle().trim());
+    public void testCreateAndReadUser() throws Exception{
+      /*  Role role = new Role();
+        role.setName("admin");
+        assertNotNull(roleRepository.save(role));*/
+        User user = new User();
+        user.setFirstname("first");
+        user.setLastname("last");
+        user.setEmail("test@mail.com");
+        user.setPassword("123");
+        user.setRole(roleRepository.findOne((long)0));
+        assertNotNull(userRepository.save(user));
     }
 
-    @Test
-    public void testCreateAndDeletePost() throws Exception{
-        Post post = new Post();
-        post.setUser(userService.getUser((long) 0));
-        assertNotNull(post);
-        Long postId = post.getId();
-        postService.createPost(post);
-        postService.deletePost(post);
-        assertNull(postId);
-    }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -19,6 +20,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan("org.madnews")
+@EnableSpringDataWebSupport
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     /* Here we register the Hibernate4Module into an ObjectMapper, then set this custom-configured ObjectMapper
