@@ -54,7 +54,7 @@ GRANT DBA TO SA
 SET SCHEMA SYSTEM_LOBS
 INSERT INTO BLOCKS VALUES(0,2147483647,0)
 SET SCHEMA PUBLIC
-INSERT INTO POSTS VALUES(0,'title                         ','<html><body>Some Content</body></html>                                                                                                                                                                                                                                                                      ','/images/small.jpeg  ','/images/big.jpeg    ',3,FALSE,0,'2015-05-13','16:27:42')
+INSERT INTO POSTS VALUES(0,'new title 0.42524509294165147 ','<html><body>Some Content</body></html>                                                                                                                                                                                                                                                                      ','/images/small.jpeg  ','/images/big.jpeg    ',3,FALSE,0,'2015-05-13','16:27:42')
 INSERT INTO POSTS VALUES(4,'title                         ','<html><body>Some Content</body></html>                                                                                                                                                                                                                                                                      ','/images/small.jpeg  ','/images/big.jpeg    ',3,TRUE,0,'2015-05-13','16:29:31')
 INSERT INTO USERS VALUES(0,'first               ','last                ','test@mail.com       ','123                           ',1)
 INSERT INTO POSTS_TAGS VALUES(0,2,0)

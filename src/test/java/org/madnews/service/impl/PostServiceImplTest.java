@@ -17,7 +17,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +36,7 @@ public class PostServiceImplTest extends TestCase {
 
     @Test
     public void testCreateAndReadUser() throws Exception{
-        Long roleid = (long) 1;
+        Long roleid = (long) 0;
         Role role = roleService.readRole(roleid);
         User user = new User();
         user.setFirstname("first");
@@ -72,9 +71,11 @@ public class PostServiceImplTest extends TestCase {
 
     @Test
     public void testReadAndUpdatePost() throws Exception {
-        Long id = (long) 1;
-        String newTitle = "new title";
+        Long id = (long) 0;
+        String newTitle = "new title " + Math.random();
+        System.out.println("new title:" + newTitle);
         Post post = postService.readPost(id); //retrieve post by id from DB
+        System.out.println("old title:" + post.getTitle());
         assertNotNull(post);
         post.setTitle(newTitle);
         postService.updatePost(post);
@@ -85,6 +86,7 @@ public class PostServiceImplTest extends TestCase {
     @Test
     public void testCreateAndDeletePost() throws Exception{
         Post post = new Post();
+        post.setUser(userService.getUser((long) 0));
         assertNotNull(post);
         Long postId = post.getId();
         postService.createPost(post);
