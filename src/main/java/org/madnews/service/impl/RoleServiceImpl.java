@@ -35,7 +35,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Iterable getRoles() {
+    public Iterable<Role> getRoles() {
         return roleRepository.findAll();
     }
 }

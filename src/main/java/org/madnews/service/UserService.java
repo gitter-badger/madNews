@@ -2,7 +2,6 @@ package org.madnews.service;
 
 import org.madnews.entity.User;
 
-import java.util.List;
 
 public interface UserService {
     void addUser(User user);

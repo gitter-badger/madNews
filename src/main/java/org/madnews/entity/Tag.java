@@ -10,7 +10,9 @@ import java.util.Set;
 @Table(name = "REF_TAGS")
 public class Tag implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 1204969362640448333L;
+
+	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column
     private Long id;

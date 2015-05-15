@@ -10,7 +10,9 @@ import java.util.Set;
 @Table(name = "REF_ROLES")
 public class Role implements Serializable {
 
-    @Id
+	private static final long serialVersionUID = 9198584759724988364L;
+
+	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
