@@ -1,6 +1,7 @@
 package org.madnews.controller;
 
 import org.madnews.entity.Post;
+import org.madnews.entity.Tag;
 import org.madnews.entity.User;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
@@ -30,7 +31,7 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/news")
-    public List getNews(){
+    public Iterable getNews(){
         return postService.getPosts();
     }
 
@@ -50,12 +51,12 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/users")
-    public List getUsers(){
+    public Iterable<User> getUsers(){
         return userService.getUsers();
     }
 
     @RequestMapping(value = "/tags")
-    public List getTags() {
+    public Iterable<Tag> getTags() {
         return tagService.getTags();
     }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 public class Tag implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column
     private Long id;
 

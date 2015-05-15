@@ -8,6 +8,6 @@ public interface PostService {
     Post readPost(Long id);
     void updatePost(Post post);
     void deletePost(Post post);
-    List getPosts();
+    Iterable getPosts();
     Post getTodayTopNews();
 }

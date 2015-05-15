@@ -7,4 +7,5 @@ public interface RoleService {
     Role readRole(Long id);
     void updateRole(Role role);
     void deleteRole(Role role);
+    Iterable getRoles();
 }

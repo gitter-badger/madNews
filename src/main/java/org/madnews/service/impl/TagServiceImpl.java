@@ -1,14 +1,13 @@
 package org.madnews.service.impl;
 
-import org.madnews.dao.TagDAO;
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
+import org.madnews.repository.TagRepository;
 import org.madnews.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -16,35 +15,35 @@ import java.util.Set;
 public class TagServiceImpl implements TagService {
 
     @Autowired
-    private TagDAO tagDAO;
+    private TagRepository tagRepository;
 
     @Override
     public void createTag(Tag tag) {
-        tagDAO.create(tag);
+        tagRepository.save(tag);
     }
 
     @Override
     public Tag readTag(Long id) {
-        return tagDAO.read(id);
+        return tagRepository.findOne(id);
     }
 
     @Override
     public void updateTag(Tag tag) {
-        tagDAO.update(tag);
+        tagRepository.save(tag);
     }
 
     @Override
     public void deleteTag(Tag tag) {
-        tagDAO.delete(tag);
+        tagRepository.delete(tag);
     }
 
     @Override
     public Set<Post> getPostsByTagId(Long id) {
-        return tagDAO.getPostsByTagId(id);
+        return tagRepository.findOne(id).getPosts();
     }
 
     @Override
-    public List getTags() {
-        return tagDAO.getTags();
+    public Iterable<Tag> getTags() {
+        return tagRepository.findAll();
     }
 }

@@ -1,43 +1,41 @@
 package org.madnews.service.impl;
 
-import org.madnews.dao.UserDAO;
 import org.madnews.entity.User;
+import org.madnews.repository.UserRepository;
 import org.madnews.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Override
     public void addUser(User user) {
-        userDAO.create(user);
+        userRepository.save(user);
     }
 
     @Override
     public User getUser(Long id) {
-        return userDAO.read(id);
+        return userRepository.findOne(id);
     }
 
     @Override
-    public List getUsers() {
-        return userDAO.getUsers();
+    public Iterable<User> getUsers() {
+        return userRepository.findAll();
     }
 
     @Override
     public void updateUser(User user) {
-        userDAO.update(user);
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(User user) {
-        userDAO.delete(user);
+        userRepository.delete(user);
     }
 }

@@ -1,47 +1,48 @@
 package org.madnews.service.impl;
 
-import org.madnews.dao.PostDAO;
 import org.madnews.entity.Post;
+import org.madnews.repository.PostRepository;
 import org.madnews.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
+
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
 public class PostServiceImpl implements PostService {
 
     @Autowired
-    private PostDAO postDAO;
+    private PostRepository postRepository;
 
     @Override
     public void createPost(Post post) {
-        postDAO.create(post);
+        postRepository.save(post);
     }
 
     @Override
     public Post readPost(Long id) {
-        return postDAO.read(id);
+        return postRepository.findOne(id);
     }
 
     @Override
     public void updatePost(Post post) {
-        postDAO.update(post);
+        postRepository.save(post);
     }
 
     @Override
     public void deletePost(Post post) {
-        postDAO.delete(post);
+        postRepository.delete(post);
     }
 
     @Override
-    public List getPosts() {
-        return postDAO.readPosts();
+    public Iterable<Post> getPosts() {
+        return postRepository.findAll();
     }
 
     @Override
     public Post getTodayTopNews() {
-        return postDAO.getTodayTopNews();
+        return postRepository.findByIsTopNewsTrueAndTimestampGreaterThan(LocalDateTime.now().minusDays(1));
     }
 }

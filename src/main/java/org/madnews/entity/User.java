@@ -1,5 +1,6 @@
 package org.madnews.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.Set;
 public class User implements Serializable{
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column
     private Long id;
 
@@ -25,6 +26,7 @@ public class User implements Serializable{
     private String email;
 
     @Column
+    @JsonIgnore
     private String password;
 
     @ManyToOne(cascade = {CascadeType.MERGE})

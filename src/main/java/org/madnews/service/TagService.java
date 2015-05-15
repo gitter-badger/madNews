@@ -11,5 +11,5 @@ public interface TagService {
     void updateTag(Tag tag);
     void deleteTag(Tag tag);
     Set getPostsByTagId(Long id);
-    List getTags();
+    Iterable<Tag> getTags();
 }
