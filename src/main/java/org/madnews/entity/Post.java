@@ -2,17 +2,15 @@ package org.madnews.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.madnews.utils.LocalDatePersistenceConverter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
 @Table(name = "POSTS")
-public class Post implements Serializable{
-
+public class Post implements Serializable {
 	private static final long serialVersionUID = 7656334471925251241L;
 
 	@Id
@@ -44,8 +42,7 @@ public class Post implements Serializable{
     private User user;
 
     @Column
-    @Convert(converter = LocalDatePersistenceConverter.class)
-    private LocalDateTime timestamp;
+    private Timestamp lastChanged;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "POSTS_TAGS",
@@ -126,11 +123,11 @@ public class Post implements Serializable{
         this.user = user;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public Timestamp getLastChanged() {
+        return lastChanged;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setLastChanged(Timestamp lastChanged) {
+        this.lastChanged = lastChanged;
     }
 }

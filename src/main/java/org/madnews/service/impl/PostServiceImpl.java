@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Service
 @Transactional
@@ -43,6 +43,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getTodayTopNews() {
-        return postRepository.findByIsTopNewsTrueAndTimestampGreaterThan(LocalDateTime.now().minusDays(1));
+        Timestamp timestamp24hEarlier = new Timestamp(System.currentTimeMillis()-24*60*60*1000);
+        return postRepository.findByIsTopNewsTrueAndLastChangedGreaterThan(timestamp24hEarlier);
     }
 }

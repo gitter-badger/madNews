@@ -17,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -65,7 +65,7 @@ public class PostServiceImplTest extends TestCase {
         post.setIsTopNews(true);
         post.setUser(user);
         post.setTags(tags);
-        post.setTimestamp(LocalDateTime.now());
+        post.setLastChanged(new Timestamp(System.currentTimeMillis()));
         assertNotNull(postRepository.save(post));
     }
 }
