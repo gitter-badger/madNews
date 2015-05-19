@@ -1,8 +1,10 @@
 package org.madnews.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.entity.User;
+import org.madnews.utils.View;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
 import org.madnews.service.UserService;
@@ -15,7 +17,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping(value="/api/v1/public")
-public class NewsController {
+public class PublicNewsController {
 
     @Autowired
     private PostService postService;
@@ -25,11 +27,13 @@ public class NewsController {
     private TagService tagService;
 
     @RequestMapping(value ="/news/{id}")
+    @JsonView(View.FullPost.class)
     public Post getPost(@PathVariable Long id){
         return postService.readPost(id);
     }
 
     @RequestMapping(value = "/news")
+    @JsonView(View.ShortPost.class)
     public Iterable<?> getNews(){
         return postService.getPosts();
     }

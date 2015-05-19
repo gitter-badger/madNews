@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.sql.Timestamp;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
-    Post findByIsTopNewsTrueAndLastChangedGreaterThan(Timestamp lastChanged);
+    Post findByIsTopNewsTrueAndTimestampGreaterThan(Timestamp lastChanged);
 }

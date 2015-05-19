@@ -1,7 +1,10 @@
 package org.madnews.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.madnews.utils.View;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -19,36 +22,55 @@ public class Post implements Serializable {
     private Long id;
 
     @Column
+    @JsonView(View.ShortPost.class)
     private String title;
 
     @Column
-    private String content;
+    @JsonView(View.ShortPost.class)
+    private String shortText;
 
     @Column
-    private String smallImg;
+    @JsonView(View.FullPost.class)
+    private String html;
 
     @Column
-    private String bigImg;
+    @JsonView(View.ShortPost.class)
+    private String mainImg;
 
     @Column
-    private int rating;
+    @JsonView(View.ShortPost.class)
+    private int position;
 
     @Column
+    @JsonIgnore
     private boolean isTopNews;
+
+    @Column
+    @JsonView(View.ShortPost.class)
+    @JsonIgnore
+    private boolean isFeatured;
+
+    @Column
+    @JsonView(View.ShortPost.class)
+    @JsonIgnore
+    private boolean IsShowOnMain;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "userid", nullable = false)
     @JsonBackReference
+    @JsonIgnore
     private User user;
 
     @Column
-    private Timestamp lastChanged;
+    @JsonView(View.ShortPost.class)
+    private Timestamp timestamp;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "POSTS_TAGS",
             joinColumns={@JoinColumn(name="POSTID")},
             inverseJoinColumns={@JoinColumn(name="TAGID")})
     @JsonManagedReference
+    @JsonView(View.FullPost.class)
     private Set<Tag> tags;
 
     public Long getId() {
@@ -67,38 +89,39 @@ public class Post implements Serializable {
         this.title = title;
     }
 
-    public String getContent() {
-        return content.trim();
+    public String getShortText() {
+        return shortText;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setShortText(String shortText) {
+        this.shortText = shortText;
     }
 
-    public String getSmallImg() {
-        return smallImg;
+    public String getHtml() {
+        return html;
     }
 
-    public void setSmallImg(String smallImg) {
-        this.smallImg = smallImg;
+    public void setHtml(String html) {
+        this.html = html;
     }
 
-    public String getBigImg() {
-        return bigImg;
+    public String getMainImg() {
+        return mainImg;
     }
 
-    public void setBigImg(String bigImg) {
-        this.bigImg = bigImg;
+    public void setMainImg(String mainImg) {
+        this.mainImg = mainImg;
     }
 
-    public int getRating() {
-        return rating;
+    public int getPosition() {
+        return position;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setPosition(int position) {
+        this.position = position;
     }
 
+    @JsonIgnore
     public boolean isTopNews() {
         return isTopNews;
     }
@@ -107,12 +130,20 @@ public class Post implements Serializable {
         this.isTopNews = isTopNews;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public boolean isFeatured() {
+        return isFeatured;
     }
 
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
+    public void setIsFeatured(boolean isFeatured) {
+        this.isFeatured = isFeatured;
+    }
+
+    public boolean isShowOnMain() {
+        return IsShowOnMain;
+    }
+
+    public void setIsShowOnMain(boolean isShowOnMain) {
+        IsShowOnMain = isShowOnMain;
     }
 
     public User getUser() {
@@ -123,11 +154,21 @@ public class Post implements Serializable {
         this.user = user;
     }
 
-    public Timestamp getLastChanged() {
-        return lastChanged;
+    public Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setLastChanged(Timestamp lastChanged) {
-        this.lastChanged = lastChanged;
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
+
 }
+

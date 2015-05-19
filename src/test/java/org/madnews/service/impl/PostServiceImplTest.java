@@ -58,14 +58,15 @@ public class PostServiceImplTest extends TestCase {
         assertNotNull(userRepository.save(user));
         Post post = new Post();
         post.setTitle("title");
-        post.setContent("<html><body>Some Content</body></html>");
-        post.setSmallImg("/images/small.jpeg");
-        post.setBigImg("/images/big.jpeg");
-        post.setRating(3);
+        post.setShortText("short text");
+        post.setHtml("<html><body>Some Content</body></html>");
+        post.setMainImg("/images/img.jpeg");
         post.setIsTopNews(true);
+        post.setIsFeatured(true);
+        post.setIsShowOnMain(true);
         post.setUser(user);
         post.setTags(tags);
-        post.setLastChanged(new Timestamp(System.currentTimeMillis()));
+        post.setTimestamp(new Timestamp(System.currentTimeMillis()));
         assertNotNull(postRepository.save(post));
     }
 }

@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Table(name = "REF_ROLES")
 public class Role implements Serializable {
-
 	private static final long serialVersionUID = 9198584759724988364L;
 
 	@Id

@@ -44,6 +44,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getTodayTopNews() {
         Timestamp timestamp24hEarlier = new Timestamp(System.currentTimeMillis()-24*60*60*1000);
-        return postRepository.findByIsTopNewsTrueAndLastChangedGreaterThan(timestamp24hEarlier);
+        return postRepository.findByIsTopNewsTrueAndTimestampGreaterThan(timestamp24hEarlier);
     }
 }

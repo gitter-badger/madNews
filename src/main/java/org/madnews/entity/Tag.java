@@ -9,7 +9,6 @@ import java.util.Set;
 @Entity
 @Table(name = "REF_TAGS")
 public class Tag implements Serializable {
-
 	private static final long serialVersionUID = 1204969362640448333L;
 
 	@Id
