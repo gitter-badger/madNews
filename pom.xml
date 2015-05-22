@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.2-1003-jdbc4</version>
+            <version>9.4-1201-jdbc41</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -90,17 +90,7 @@
         <!-- Logging dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-simple</artifactId>
             <version>1.7.12</version>
         </dependency>
     </dependencies>
