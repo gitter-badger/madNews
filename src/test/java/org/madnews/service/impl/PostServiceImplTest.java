@@ -56,17 +56,24 @@ public class PostServiceImplTest extends TestCase {
         user.setPassword("123");
         user.setRole(role1);
         assertNotNull(userRepository.save(user));
-        Post post = new Post();
-        post.setTitle("title");
-        post.setShortText("short text");
-        post.setHtml("<html><body>Some Content</body></html>");
-        post.setMainImg("/images/img.jpeg");
-        post.setIsTopNews(true);
-        post.setIsFeatured(true);
-        post.setIsShowOnMain(true);
-        post.setUser(user);
-        post.setTags(tags);
-        post.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        assertNotNull(postRepository.save(post));
+
+        for (int i=0; i<100; i++) {
+            Post post = new Post();
+            post.setTitle("title " + i);
+            post.setShortText("short text " + i);
+            post.setHtml("<html><body>Some Content "+i+"</body></html>");
+            post.setMainImg("/images/"+i+".jpeg");
+            if(i % 2 == 0){
+                post.setIsTopNews(true);
+            }
+            if(i % 2 != 0) {
+                post.setIsFeatured(true);
+            }
+            post.setIsShowOnMain(true);
+            post.setUser(user);
+            post.setTags(tags);
+            post.setTimestamp(new Timestamp(System.currentTimeMillis()));
+            assertNotNull(postRepository.save(post));
+        }
     }
 }

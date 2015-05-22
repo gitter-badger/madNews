@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -57,7 +56,7 @@ public class RootConfig {
 
     Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         return properties;
     }
