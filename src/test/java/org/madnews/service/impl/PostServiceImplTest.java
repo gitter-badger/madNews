@@ -4,10 +4,6 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madnews.config.RootConfig;
-import org.madnews.entity.Post;
-import org.madnews.entity.Role;
-import org.madnews.entity.Tag;
-import org.madnews.entity.User;
 import org.madnews.repository.PostRepository;
 import org.madnews.repository.RoleRepository;
 import org.madnews.repository.TagRepository;
@@ -16,12 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = RootConfig.class)
@@ -39,6 +29,7 @@ public class PostServiceImplTest extends TestCase {
 
     @Test
     public void inserts() {
+        /*
         List<Role> roles = new ArrayList<>();
         Set<Tag> tags = new HashSet<>();
         Role role1 = new Role(); role1.setName("admin"); roles.add(role1);
@@ -57,7 +48,7 @@ public class PostServiceImplTest extends TestCase {
         user.setRole(role1);
         assertNotNull(userRepository.save(user));
 
-        for (int i=0; i<100; i++) {
+        for (int i=0; i<51; i++) {
             Post post = new Post();
             post.setTitle("title " + i);
             post.setShortText("short text " + i);
@@ -75,5 +66,6 @@ public class PostServiceImplTest extends TestCase {
             post.setTimestamp(new Timestamp(System.currentTimeMillis()));
             assertNotNull(postRepository.save(post));
         }
+        */
     }
 }
