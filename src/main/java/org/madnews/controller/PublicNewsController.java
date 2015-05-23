@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.entity.User;
-import org.madnews.utils.View;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
 import org.madnews.service.UserService;
+import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
@@ -26,39 +27,39 @@ public class PublicNewsController {
     @Autowired
     private TagService tagService;
 
-    @RequestMapping(value ="/news/{id}")
+    @RequestMapping(value ="/news/{id}", method = RequestMethod.GET)
     @JsonView(View.FullPost.class)
     public Post getPost(@PathVariable Long id){
         return postService.readPost(id);
     }
 
-    @RequestMapping(value = "/news")
+    @RequestMapping(value = "/news", method = RequestMethod.GET)
     @JsonView(View.ShortPost.class)
     public Iterable<?> getNews(){
         return postService.getPosts();
     }
 
-    @RequestMapping(value = "/news/?tag={id}")
+    @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET)
     public Set<?> getPostsByTagId(@PathVariable Long id){
         return tagService.getPostsByTagId(id);
     }
 
-    @RequestMapping(value = "/news/top")
+    @RequestMapping(value = "/news/top", method = RequestMethod.GET)
     public Post getTodayTopNews(){
         return postService.getTodayTopNews();
     }
 
-    @RequestMapping(value ="/users/{id}")
+    @RequestMapping(value ="/users/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable Long id){
         return userService.getUser(id);
     }
 
-    @RequestMapping(value = "/users")
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public Iterable<User> getUsers(){
         return userService.getUsers();
     }
 
-    @RequestMapping(value = "/tags")
+    @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public Iterable<Tag> getTags() {
         return tagService.getTags();
     }

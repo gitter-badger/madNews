@@ -10,7 +10,7 @@
 <a href="api/v1/public/news/top">Get today top news</a><br>
 <a href="api/v1/public/users/1">Get one user</a><br>
 <a href="api/v1/public/users">Get all users</a><br>
-<a href="api/v1/public/news/?tag=0">Get posts by tag id</a><br>
 <a href="api/v1/public/tags">Get tags</a><br>
+<a href="api/v1/public/news/tag/1">Get posts by tag id</a>
 </body>
 </html>

@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "REF_ROLES")
-public class Role implements Serializable {
+@Table(name = "REF_PERMISSIONS")
+public class Permission implements Serializable {
 	private static final long serialVersionUID = 9198584759724988364L;
 
 	@Id
@@ -18,7 +18,7 @@ public class Role implements Serializable {
     @Column
     private String name;
 
-    @OneToMany(mappedBy="role")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy="permissions")
     @JsonBackReference
     private Set<User> users;
 

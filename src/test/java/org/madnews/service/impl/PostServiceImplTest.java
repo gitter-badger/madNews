@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.madnews.config.RootConfig;
+import org.madnews.repository.PermissionRepository;
 import org.madnews.repository.PostRepository;
-import org.madnews.repository.RoleRepository;
 import org.madnews.repository.TagRepository;
 import org.madnews.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,29 +25,28 @@ public class PostServiceImplTest extends TestCase {
     @Autowired
     private TagRepository tagRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private PermissionRepository permissionRepository;
 
     @Test
     public void inserts() {
-        /*
-        List<Role> roles = new ArrayList<>();
+/*
+        Set<Permission> permissions = new HashSet<>();
         Set<Tag> tags = new HashSet<>();
-        Role role1 = new Role(); role1.setName("admin"); roles.add(role1);
-        Role role2 = new Role(); role2.setName("writer"); roles.add(role2);
-        Role role3 = new Role(); role3.setName("author"); roles.add(role3);
-        Role role4 = new Role(); role4.setName("corrector"); roles.add(role4);
-        assertNotNull(roleRepository.save(roles));
+        Permission role1 = new Permission(); role1.setName("read"); permissions.add(role1);
+        Permission role2 = new Permission(); role2.setName("write"); permissions.add(role2);
+        Permission role3 = new Permission(); role3.setName("update"); permissions.add(role3);
+        Permission role4 = new Permission(); role4.setName("delete"); permissions.add(role4);
+        assertNotNull(permissionRepository.save(permissions));
         Tag tag1 = new Tag(); tag1.setName("sport"); tags.add(tag1);
-        Tag tag2 = new Tag(); tag1.setName("music"); tags.add(tag2);
+        Tag tag2 = new Tag(); tag2.setName("music"); tags.add(tag2);
         assertNotNull(tagRepository.save(tags));
         User user = new User();
         user.setFirstname("first");
         user.setLastname("last");
         user.setEmail("test@mail.com");
         user.setPassword("123");
-        user.setRole(role1);
+        user.setPermissions(permissions);
         assertNotNull(userRepository.save(user));
-
         for (int i=0; i<51; i++) {
             Post post = new Post();
             post.setTitle("title " + i);

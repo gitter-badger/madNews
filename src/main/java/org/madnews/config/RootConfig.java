@@ -22,7 +22,7 @@ public class RootConfig {
     public DataSource dataSource() {
         return new SimpleDriverDataSource(
                 new org.postgresql.Driver(),
-                "jdbc:postgresql://ec2-54-228-180-92.eu-west-1.compute.amazonaws.com:5432/d7mifg53vd966b?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
+                "jdbc:postgresql://ec2-54-228-180-92.eu-west-1.compute.amazonaws.com:5432/d7mifg53vd966b?sslmode=require",
                 "ezqxsqnvfpqvkk", "u3U8m-s1Eayt7gbBm2n17F7MVg");
     }
 

@@ -30,10 +30,12 @@ public class User implements Serializable{
     @JsonIgnore
     private String password;
 
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "roleid")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "USERS_PERMISSIONS",
+            joinColumns={@JoinColumn(name="USERID")},
+            inverseJoinColumns={@JoinColumn(name="PERMISSIONID")})
     @JsonManagedReference
-    private Role role;
+    private Set<Permission> permissions;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
@@ -79,12 +81,12 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 
     public Set<Post> getPosts() {

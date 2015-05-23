@@ -4,6 +4,10 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
+    /**
+     * Возвращает класс с настройками для базы данных
+     * @return
+     */
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[] {RootConfig.class };
