@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+/**
+ * @Entity. Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
+ */
 @Entity
 @Table(name = "USERS")
 public class User implements Serializable{

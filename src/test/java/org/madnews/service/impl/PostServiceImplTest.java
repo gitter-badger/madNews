@@ -32,10 +32,10 @@ public class PostServiceImplTest extends TestCase {
 /*
         Set<Permission> permissions = new HashSet<>();
         Set<Tag> tags = new HashSet<>();
-        Permission role1 = new Permission(); role1.setName("read"); permissions.add(role1);
-        Permission role2 = new Permission(); role2.setName("write"); permissions.add(role2);
-        Permission role3 = new Permission(); role3.setName("update"); permissions.add(role3);
-        Permission role4 = new Permission(); role4.setName("delete"); permissions.add(role4);
+        Permission role1 = new Permission(); role1.setName("user-management"); permissions.add(role1);
+        Permission role2 = new Permission(); role2.setName("news-add-edit-delete-own"); permissions.add(role2);
+        Permission role3 = new Permission(); role3.setName("news-edit-any"); permissions.add(role3);
+        Permission role4 = new Permission(); role4.setName("news-edit-delete-any "); permissions.add(role4);
         assertNotNull(permissionRepository.save(permissions));
         Tag tag1 = new Tag(); tag1.setName("sport"); tags.add(tag1);
         Tag tag2 = new Tag(); tag2.setName("music"); tags.add(tag2);

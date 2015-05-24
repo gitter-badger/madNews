@@ -42,6 +42,13 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         super.configureMessageConverters(converters);
     }
 
+    /**
+     * метод для работы с ресурсами. Можно добавить, какие ссылки контроллер должен игнорировать.
+     * Обычно, контроллер при получении ссылки хочет вернуть сервлет или jsp файл.
+     * Например, на ссылку "/index" контроллер(LinkController) вернёт наш jsp файл index.jsp.
+     * А при ссылке на изображение типа "images/1.jpeg" что ему возвращать? Метод служит для игнора таких ссылок.
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
@@ -50,6 +57,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/partials-html/**").addResourceLocations("/partials-html/");
     }
 
+    /**
+     * Сам не разобрался:) Вроде как конструктор ссылок. В контроллере LinkController я возвращаю одно слово "index"/
+     * Этот метод приписывает ему префикс "/" и суффикс ".jsp". В результате находится файл index.jsp.
+     * @return класс InternalResourceViewResolver
+     */
     @Bean
     public InternalResourceViewResolver setupViewResolver() {
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();

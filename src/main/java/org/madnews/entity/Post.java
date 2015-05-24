@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Set;
 
+/**
+ * @Entity. Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
+ */
 @Entity
 @Table(name = "POSTS")
 public class Post implements Serializable {
