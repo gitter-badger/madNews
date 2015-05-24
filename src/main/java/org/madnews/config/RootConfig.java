@@ -34,9 +34,9 @@ public class RootConfig {
     @Bean
     public DataSource dataSource() {
         return new SimpleDriverDataSource(
-                new org.postgresql.Driver(),
-                "jdbc:postgresql://ec2-54-228-180-92.eu-west-1.compute.amazonaws.com:5432/d7mifg53vd966b?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
-                "ezqxsqnvfpqvkk", "u3U8m-s1Eayt7gbBm2n17F7MVg");
+                new org.hsqldb.jdbc.JDBCDriver(),
+                "jdbc:hsqldb:file:src/main/data/db",
+                "sa", "");
     }
 
     /**
@@ -75,7 +75,7 @@ public class RootConfig {
     Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.show_sql", "false");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
         return properties;
     }
 }

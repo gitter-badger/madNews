@@ -51,12 +51,12 @@ public class PostServiceImplTest extends TestCase {
             Post post = new Post();
             post.setTitle("title " + i);
             post.setShortText("short text " + i);
-            post.setHtml("<html><body>Some Content "+i+"</body></html>");
-            post.setMainImg("/images/"+i+".jpeg");
-            if(i % 2 == 0){
+            post.setHtml("<html><body>Some Content " + i + "</body></html>");
+            post.setMainImg("/images/" + i + ".jpeg");
+            if (i % 2 == 0) {
                 post.setIsTopNews(true);
             }
-            if(i % 2 != 0) {
+            if (i % 2 != 0) {
                 post.setIsFeatured(true);
             }
             post.setIsShowOnMain(true);
@@ -67,4 +67,5 @@ public class PostServiceImplTest extends TestCase {
         }
         */
     }
+
 }
