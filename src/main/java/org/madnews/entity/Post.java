@@ -65,6 +65,7 @@ public class Post implements Serializable {
     private User user;
 
     @Column
+    @Version
     @JsonView(View.ShortPost.class)
     private Timestamp timestamp;
 
