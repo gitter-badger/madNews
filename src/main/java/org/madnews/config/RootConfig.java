@@ -34,9 +34,7 @@ public class RootConfig {
     @Bean
     public DataSource dataSource() {
         return new SimpleDriverDataSource(
-                new org.hsqldb.jdbc.JDBCDriver(),
-                "jdbc:hsqldb:file:src/main/data/db",
-                "sa", "");
+                new org.hsqldb.jdbc.JDBCDriver(), "jdbc:hsqldb:file:src/main/data/db", "sa", "");
     }
 
     /**
