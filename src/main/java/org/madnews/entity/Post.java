@@ -1,27 +1,35 @@
 package org.madnews.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.madnews.utils.View;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.Version;
 import java.sql.Timestamp;
 import java.util.Set;
 
 /**
- * @Entity. Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
+ * Entity Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
  */
 @Entity
 @Table(name = "POSTS")
-public class Post implements Serializable {
-	private static final long serialVersionUID = 7656334471925251241L;
+public class Post {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column
@@ -60,8 +68,8 @@ public class Post implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "userid", nullable = false)
-    @JsonBackReference
-    @JsonIgnore
+    @JsonManagedReference("user-posts")
+    @JsonView(View.FullPost.class)
     private User user;
 
     @Column
@@ -73,7 +81,7 @@ public class Post implements Serializable {
     @JoinTable(name = "POSTS_TAGS",
             joinColumns={@JoinColumn(name="POSTID")},
             inverseJoinColumns={@JoinColumn(name="TAGID")})
-    @JsonManagedReference
+    @JsonManagedReference("posts-tags")
     @JsonView(View.FullPost.class)
     private Set<Tag> tags;
 
@@ -125,7 +133,6 @@ public class Post implements Serializable {
         this.position = position;
     }
 
-    @JsonIgnore
     public boolean isTopNews() {
         return isTopNews;
     }
@@ -173,6 +180,5 @@ public class Post implements Serializable {
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
-
 }
 

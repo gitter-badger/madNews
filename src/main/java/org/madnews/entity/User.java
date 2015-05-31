@@ -1,23 +1,32 @@
 package org.madnews.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import java.util.Set;
 
 /**
- * @Entity. Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
+ * Entity Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
  */
 @Entity
 @Table(name = "USERS")
-public class User implements Serializable{
-	private static final long serialVersionUID = -3002975828481684160L;
+public class User {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column
@@ -37,11 +46,11 @@ public class User implements Serializable{
     @JoinTable(name = "USERS_PERMISSIONS",
             joinColumns={@JoinColumn(name="USERID")},
             inverseJoinColumns={@JoinColumn(name="PERMISSIONID")})
-    @JsonManagedReference
+    @JsonManagedReference("users-permissions")
     private Set<Permission> permissions;
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
+    @JsonBackReference("user-posts")
     private Set<Post> posts;
 
     public Long getId() {

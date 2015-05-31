@@ -50,6 +50,7 @@ public class PublicNewsController {
     }
 
     @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET)
+    @JsonView(View.ShortPost.class)
     public Set<?> getPostsByTagId(@PathVariable Long id){
         Tag tag = tagService.readTag(id);
         if (tag == null){

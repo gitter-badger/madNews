@@ -5,6 +5,7 @@ import org.madnews.entity.User;
 import org.madnews.service.PostService;
 import org.madnews.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +21,7 @@ public class PrivateNewsController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/news", method = RequestMethod.POST)
+    @RequestMapping(value = "/news", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void postNews(@RequestBody Post post){
         postService.createPost(post);
     }

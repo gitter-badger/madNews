@@ -2,28 +2,32 @@ package org.madnews.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
 import java.util.Set;
 
 /**
- * @Entity. Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
+ * Entity Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
  */
 @Entity
 @Table(name = "REF_TAGS")
-public class Tag implements Serializable {
-	private static final long serialVersionUID = 1204969362640448333L;
+public class Tag {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="tags")
-    @JsonBackReference
+    @JsonBackReference("posts-tags")
     private Set<Post> posts;
 
     public Long getId() {
