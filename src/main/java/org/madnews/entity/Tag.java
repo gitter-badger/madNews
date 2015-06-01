@@ -1,6 +1,7 @@
 package org.madnews.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 import javax.persistence.FetchType;
+
 import java.util.Set;
 
 /**
@@ -28,6 +30,7 @@ public class Tag {
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="tags")
     @JsonBackReference("posts-tags")
+    @JsonIgnore
     private Set<Post> posts;
 
     public Long getId() {

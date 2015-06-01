@@ -15,8 +15,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public void addUser(User user) {
-        userRepository.save(user);
+    public User addUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
@@ -38,4 +38,14 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(User user) {
         userRepository.delete(user);
     }
+    
+	@Override
+	public boolean hasUserByEmail(String email) {
+		if (userRepository.findByEmail(email).size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 }

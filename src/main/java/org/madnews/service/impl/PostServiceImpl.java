@@ -4,6 +4,8 @@ import org.madnews.entity.Post;
 import org.madnews.repository.PostRepository;
 import org.madnews.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +19,8 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Override
-    public void createPost(Post post) {
-        postRepository.save(post);
+    public Post createPost(Post post) {
+        return postRepository.save(post);
     }
 
     @Override
@@ -45,5 +47,10 @@ public class PostServiceImpl implements PostService {
     public Post getTodayTopNews() {
         Timestamp timestamp24hEarlier = new Timestamp(System.currentTimeMillis()-24*60*60*1000);
         return postRepository.findByIsTopNewsTrueAndTimestampGreaterThan(timestamp24hEarlier);
+    }
+    
+    @Override
+    public Page<Post> getPostsByTag(Long tagId, Pageable pageable) {
+    	return postRepository.findAllByTagsIdOrderByTimestampDesc(tagId, pageable);
     }
 }

@@ -2,9 +2,13 @@ package org.madnews.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -20,7 +24,8 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan("org.madnews")
 @EnableSpringDataWebSupport
-public class WebAppConfig extends WebMvcConfigurerAdapter {
+@EnableJpaRepositories
+public class WebAppConfig extends RepositoryRestMvcConfiguration {
 
     /**
      * Для JSON
@@ -75,5 +80,13 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         resolver.setSuffix(".jsp");
         resolver.setViewClass(JstlView.class);
         return resolver;
+    }
+    
+    @Override
+    @Bean
+    public HateoasPageableHandlerMethodArgumentResolver pageableResolver() {
+      HateoasPageableHandlerMethodArgumentResolver resolver = super.pageableResolver();
+      resolver.setOneIndexedParameters(true);
+      return resolver;
     }
 }
