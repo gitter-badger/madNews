@@ -1,6 +1,7 @@
 package org.madnews.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 import javax.persistence.FetchType;
+
 import java.util.Set;
 
 /**
@@ -28,6 +30,7 @@ public class Permission {
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy="permissions")
     @JsonBackReference("users-permissions")
+    @JsonIgnore
     private Set<User> users;
 
     public Long getId() {

@@ -46,11 +46,12 @@ public class User {
     @JoinTable(name = "USERS_PERMISSIONS",
             joinColumns={@JoinColumn(name="USERID")},
             inverseJoinColumns={@JoinColumn(name="PERMISSIONID")})
-    @JsonManagedReference("users-permissions")
+//    @JsonManagedReference("users-permissions")
     private Set<Permission> permissions;
 
     @OneToMany(mappedBy = "user")
     @JsonBackReference("user-posts")
+    @JsonIgnore
     private Set<Post> posts;
 
     public Long getId() {
