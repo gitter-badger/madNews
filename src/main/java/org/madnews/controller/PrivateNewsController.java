@@ -35,7 +35,7 @@ public class PrivateNewsController {
         return userService.addUser(user);
     }
     
-    @RequestMapping(value = "/users/emails/{email:^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$}", method = RequestMethod.GET)
+    @RequestMapping(value = "/helpers/email-not-in-db/{email:^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$}", method = RequestMethod.GET)
     public ResponseEntity<EmailResponseWrapper> isUserByEmail(@PathVariable String email){
     	boolean result = userService.hasUserByEmail(email);
     	EmailResponseWrapper requestWrapper = new EmailResponseWrapper(email, result);
