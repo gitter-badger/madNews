@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value="/api/v1/public")
@@ -101,4 +100,14 @@ public class PublicNewsController {
         }
         return tags;
     }
+    
+    @RequestMapping(value ="/tags/{id}", method = RequestMethod.GET)
+    public Tag getTag(@PathVariable Long id){
+        Tag tag = tagService.readTag(id);
+        if (tag==null){
+            throw new ResourceNotFoundException();
+        }
+        return tag;
+    }
+
 }
