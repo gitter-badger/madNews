@@ -1,10 +1,13 @@
 package org.madnews.controller;
 
+import java.util.List;
+
 import org.madnews.entity.Post;
 import org.madnews.entity.User;
 import org.madnews.service.PostService;
 import org.madnews.service.UserService;
 import org.madnews.utils.EmailResponseWrapper;
+import org.madnews.utils.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,12 +28,31 @@ public class PrivateNewsController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/news/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/news", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
+    
+    @RequestMapping(value ="/users/{id}", method = RequestMethod.GET)
+    public User getUser(@PathVariable Long id){
+        User user = userService.getUser(id);
+        if (user==null){
+            throw new ResourceNotFoundException();
+        }
+        return user;
+    }
 
-    @RequestMapping(value = "/users/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public Iterable<User> getUsers(){
+        List users = (List) userService.getUsers();
+        if (users.size()==0){
+            throw new ResourceNotFoundException();
+        }
+        return users;
+    }
+
+
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
     public User postUser(@RequestBody User user){
         return userService.addUser(user);
     }

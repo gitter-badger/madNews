@@ -74,24 +74,6 @@ public class PublicNewsController {
         return post;
     }
 
-    @RequestMapping(value ="/users/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable Long id){
-        User user = userService.getUser(id);
-        if (user==null){
-            throw new ResourceNotFoundException();
-        }
-        return user;
-    }
-
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public Iterable<User> getUsers(){
-        List users = (List) userService.getUsers();
-        if (users.size()==0){
-            throw new ResourceNotFoundException();
-        }
-        return users;
-    }
-
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public Iterable<Tag> getTags() {
         List tags = (List) tagService.getTags();
