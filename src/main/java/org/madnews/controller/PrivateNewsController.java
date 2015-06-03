@@ -25,12 +25,12 @@ public class PrivateNewsController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/news", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/news/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/create", method = RequestMethod.POST)
     public User postUser(@RequestBody User user){
         return userService.addUser(user);
     }
