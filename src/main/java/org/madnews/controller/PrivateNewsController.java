@@ -24,7 +24,6 @@ public class PrivateNewsController {
 
     @Autowired
     private PostService postService;
-
     @Autowired
     private UserService userService;
 
@@ -43,14 +42,13 @@ public class PrivateNewsController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public Iterable<User> getUsers(){
+    public List getUsers(){
         List users = (List) userService.getUsers();
         if (users.size()==0){
             throw new ResourceNotFoundException();
         }
         return users;
     }
-
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public User postUser(@RequestBody User user){
@@ -61,6 +59,6 @@ public class PrivateNewsController {
     public ResponseEntity<EmailResponseWrapper> isUserByEmail(@PathVariable String email){
     	boolean result = userService.hasUserByEmail(email);
     	EmailResponseWrapper requestWrapper = new EmailResponseWrapper(email, result);
-    	return new ResponseEntity<EmailResponseWrapper>(requestWrapper, HttpStatus.OK);
+    	return new ResponseEntity<>(requestWrapper, HttpStatus.OK);
     }
 }

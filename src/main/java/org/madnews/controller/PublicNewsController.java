@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
-import org.madnews.entity.User;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
-import org.madnews.service.UserService;
 import org.madnews.utils.ResourceNotFoundException;
 import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +29,6 @@ public class PublicNewsController {
 
     @Autowired
     private PostService postService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private TagService tagService;
 
@@ -75,7 +71,7 @@ public class PublicNewsController {
     }
 
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
-    public Iterable<Tag> getTags() {
+    public List getTags() {
         List tags = (List) tagService.getTags();
         if (tags.size()==0){
             throw new ResourceNotFoundException();
@@ -91,5 +87,4 @@ public class PublicNewsController {
         }
         return tag;
     }
-
 }
