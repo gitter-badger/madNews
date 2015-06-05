@@ -11,12 +11,6 @@ public class LinkController {
 
     @RequestMapping(value={"/"})
     public String getHomePage() {
-        return "index";
+        return "index.html";
     }
-
-    @RequestMapping(value={"/admin"})
-    public String getAdminPage() {
-        return "admin";
-    }
-
 }

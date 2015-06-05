@@ -14,9 +14,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 import java.util.List;
 
@@ -28,11 +25,10 @@ import java.util.List;
 public class WebAppConfig extends RepositoryRestMvcConfiguration {
 
     /**
-     * Для JSON
+     * Here we register the Hibernate4Module into an ObjectMapper, then set this custom-configured ObjectMapper
+     * to the MessageConverter and return it to be added to the HttpMessageConverters of our application
      * @return MappingJackson2HttpMessageConverter
      */
-    /* Here we register the Hibernate4Module into an ObjectMapper, then set this custom-configured ObjectMapper
-     * to the MessageConverter and return it to be added to the HttpMessageConverters of our application*/
     private MappingJackson2HttpMessageConverter jacksonMessageConverter(){
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper mapper = new ObjectMapper();
@@ -44,7 +40,6 @@ public class WebAppConfig extends RepositoryRestMvcConfiguration {
 
     /**
      * Для JSON
-     * @param converters
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -54,34 +49,14 @@ public class WebAppConfig extends RepositoryRestMvcConfiguration {
     }
 
     /**
-     * метод для работы с ресурсами. Можно добавить, какие ссылки контроллер должен игнорировать.
-     * Обычно, контроллер при получении ссылки хочет вернуть сервлет или jsp файл.
-     * Например, на ссылку "/index" контроллер(LinkController) вернёт наш jsp файл index.jsp.
-     * А при ссылке на изображение типа "images/1.jpeg" что ему возвращать? Метод служит для игнора таких ссылок.
-     * @param registry
+     * Метод для работы со статическими ресурсами. Например, html, jpeg и т.д.
+     * Так как у нас в папке webapp одна статика(нет jsp файлов), то мы пометили весь корневой каталог ("/").
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
-        registry.addResourceHandler("/media_files/**").addResourceLocations("/media_files/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/images/");
-        registry.addResourceHandler("/partials-html/**").addResourceLocations("/partials-html/");
+        registry.addResourceHandler("/**").addResourceLocations("/");
     }
 
-    /**
-     * Сам не разобрался:) Вроде как конструктор ссылок. В контроллере LinkController я возвращаю одно слово "index"/
-     * Этот метод приписывает ему префикс "/" и суффикс ".jsp". В результате находится файл index.jsp.
-     * @return класс InternalResourceViewResolver
-     */
-    @Bean
-    public InternalResourceViewResolver setupViewResolver() {
-        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-        resolver.setPrefix("/");
-        resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView.class);
-        return resolver;
-    }
-    
     @Override
     @Bean
     public HateoasPageableHandlerMethodArgumentResolver pageableResolver() {
