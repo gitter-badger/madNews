@@ -15,17 +15,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User addUser(User user) {
+    public User createUser(User user) {
         return userRepository.save(user);
     }
 
     @Override
-    public User getUser(Long id) {
+    public User readUser(Long id) {
         return userRepository.findOne(id);
     }
 
     @Override
-    public Iterable<User> getUsers() {
+    public Iterable<User> readUsers() {
         return userRepository.findAll();
     }
 

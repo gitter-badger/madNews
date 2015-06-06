@@ -34,7 +34,7 @@ public class PrivateNewsController {
     
     @RequestMapping(value ="/users/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable Long id){
-        User user = userService.getUser(id);
+        User user = userService.readUser(id);
         if (user==null){
             throw new ResourceNotFoundException();
         }
@@ -43,7 +43,7 @@ public class PrivateNewsController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public List getUsers(){
-        List users = (List) userService.getUsers();
+        List users = (List) userService.readUsers();
         if (users.size()==0){
             throw new ResourceNotFoundException();
         }
@@ -52,7 +52,7 @@ public class PrivateNewsController {
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public User postUser(@RequestBody User user){
-        return userService.addUser(user);
+        return userService.createUser(user);
     }
     
     @RequestMapping(value = "/helpers/email-not-in-db/{email:^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$}", method = RequestMethod.GET)

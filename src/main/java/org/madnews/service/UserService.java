@@ -4,9 +4,9 @@ import org.madnews.entity.User;
 
 
 public interface UserService {
-    User addUser(User user);
-    User getUser(Long id);
-    Iterable<User> getUsers();
+    User createUser(User user);
+    User readUser(Long id);
+    Iterable<User> readUsers();
     void updateUser(User user);
     void deleteUser(User user);
     boolean hasUserByEmail(String email);
