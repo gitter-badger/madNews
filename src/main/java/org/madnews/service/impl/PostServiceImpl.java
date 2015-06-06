@@ -30,7 +30,18 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void updatePost(Post post) {
-        postRepository.save(post);
+        Post postFromDB = postRepository.findOne(post.getId());
+        postFromDB.setIsShowOnMain(post.isShowOnMain());
+        postFromDB.setHtml(post.getHtml());
+        postFromDB.setIsFeatured(post.isFeatured());
+        postFromDB.setIsTopNews(post.isTopNews());
+        postFromDB.setMainImg(post.getMainImg());
+        postFromDB.setPosition(post.getPosition());
+        postFromDB.setShortText(post.getShortText());
+        //postFromDB.setTimestamp(new Timestamp(System.currentTimeMillis()));
+        postFromDB.setTitle(post.getTitle());
+        postFromDB.setTags(post.getTags());
+        postRepository.save(postFromDB);
     }
 
     @Override

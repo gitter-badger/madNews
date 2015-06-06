@@ -31,6 +31,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
+        User userFromDB = userRepository.findOne(user.getId());
+        userFromDB.setUsername(user.getUsername());
+        userFromDB.setEmail(user.getEmail());
+        userFromDB.setPassword(user.getPassword());
+        userFromDB.setPermissions(user.getPermissions());
+        userFromDB.setPosts(user.getPosts());
         userRepository.save(user);
     }
 
@@ -41,11 +47,7 @@ public class UserServiceImpl implements UserService {
     
 	@Override
 	public boolean hasUserByEmail(String email) {
-		if (userRepository.findByEmail(email).size() == 0) {
-			return false;
-		} else {
-			return true;
-		}
+        return userRepository.findByEmail(email).size() != 0;
 	}
 
 }

@@ -26,7 +26,10 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void updateTag(Tag tag) {
-        tagRepository.save(tag);
+        Tag tagFromDB = tagRepository.findOne(tag.getId());
+        tagFromDB.setName(tag.getName());
+        tagFromDB.setPosts(tag.getPosts());
+        tagRepository.save(tagFromDB);
     }
 
     @Override

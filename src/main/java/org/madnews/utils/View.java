@@ -5,6 +5,4 @@ public class View {
     public interface FullPost extends ShortPost {}
     public interface ManyUsers {}
     public interface OneUser extends ManyUsers{}
-
-
 }

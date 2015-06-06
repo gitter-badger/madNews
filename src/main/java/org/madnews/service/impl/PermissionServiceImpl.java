@@ -26,7 +26,10 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public void updatePermission(Permission permission) {
-        permissionRepository.save(permission);
+        Permission permissionFromDB = permissionRepository.findOne(permission.getId());
+        permissionFromDB.setName(permission.getName());
+        permissionFromDB.setUsers(permission.getUsers());
+        permissionRepository.save(permissionFromDB);
     }
 
     @Override
