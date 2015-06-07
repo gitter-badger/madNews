@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -16,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        user.setPassword(encrypt(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -34,7 +38,6 @@ public class UserServiceImpl implements UserService {
         User userFromDB = userRepository.findOne(user.getId());
         userFromDB.setUsername(user.getUsername());
         userFromDB.setEmail(user.getEmail());
-        userFromDB.setPassword(user.getPassword());
         userFromDB.setPermissions(user.getPermissions());
         userFromDB.setPosts(user.getPosts());
         userRepository.save(user);
@@ -50,4 +53,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).size() != 0;
 	}
 
+    @Override
+    public String encrypt(String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(pass.getBytes());
+            byte[] bytes = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

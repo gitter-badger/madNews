@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/v1/public")
-public class PublicNewsController {
+public class PublicController {
 
     @Autowired
     private PostService postService;
