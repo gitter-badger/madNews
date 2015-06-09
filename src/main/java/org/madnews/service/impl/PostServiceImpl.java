@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 @Transactional
@@ -63,5 +64,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<Post> getPostsByTag(Long tagId, Pageable pageable) {
     	return postRepository.findAllByTagsIdOrderByTimestampDesc(tagId, pageable);
+    }
+    
+    @Override
+    public List<Post> readPostsOnMain() {
+    	return postRepository.findByIsShowOnMainTrueOrderByTimestampDesc();
     }
 }

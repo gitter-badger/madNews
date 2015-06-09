@@ -45,7 +45,7 @@ public class PublicController {
     @RequestMapping(value = "/news", method = RequestMethod.GET)
     @JsonView(View.ShortPost.class)
     public Iterable<?> getNews(){
-        List posts = (List) postService.getPosts();
+        List posts = (List) postService.readPostsOnMain();
         if (posts.size()==0){
             throw new ResourceNotFoundException();
         }
@@ -55,7 +55,7 @@ public class PublicController {
     @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET)
     @JsonView(View.ShortPost.class)
     public ResponseEntity<PagedResources<Post>>  getPostsByTagId(@PathVariable Long id,
-    		@PageableDefault(page = 0, size = 10) Pageable pageable,
+    		@PageableDefault(page = 0, size = 25) Pageable pageable,
     		PagedResourcesAssembler assembler){
     	Page<Post> posts = postService.getPostsByTag(id, pageable);
         return new ResponseEntity<PagedResources<Post>>(assembler.toResource(posts), HttpStatus.OK);

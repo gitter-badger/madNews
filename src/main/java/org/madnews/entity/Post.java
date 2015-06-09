@@ -3,11 +3,13 @@ package org.madnews.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
+
 import org.madnews.utils.View;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.GenerationType;
@@ -18,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinTable;
 import javax.persistence.Version;
+
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -64,7 +67,7 @@ public class Post {
     @Column
     @JsonView(View.ShortPost.class)
     @JsonIgnore
-    private boolean IsShowOnMain;
+    private boolean isShowOnMain;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "userid", nullable = false)
@@ -84,6 +87,11 @@ public class Post {
 //    @JsonManagedReference("posts-tags")
     @JsonView(View.FullPost.class)
     private Set<Tag> tags;
+
+    @PrePersist
+    void preInsert() {
+    	if (position == 0) position = -1;
+    }
 
     public Long getId() {
         return id;
@@ -150,11 +158,11 @@ public class Post {
     }
 
     public boolean isShowOnMain() {
-        return IsShowOnMain;
+        return isShowOnMain;
     }
 
     public void setIsShowOnMain(boolean isShowOnMain) {
-        IsShowOnMain = isShowOnMain;
+        this.isShowOnMain = isShowOnMain;
     }
 
     public User getUser() {
