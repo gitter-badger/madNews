@@ -72,7 +72,6 @@ public class WebAppConfig extends RepositoryRestMvcConfiguration {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(1048576); //1 Mb
         multipartResolver.setMaxInMemorySize(1048576);
-        multipartResolver.setMaxUploadSize(1048576);
         return multipartResolver;
     }
 }

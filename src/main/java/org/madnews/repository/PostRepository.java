@@ -6,8 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Post findByIsTopNewsTrueAndTimestampGreaterThan(Timestamp lastChanged);
     Page<Post> findAllByTagsIdOrderByTimestampDesc(Long tagId, Pageable pageable);
+    List<Post> findByIsShowOnMainTrueOrderByTimestampDesc();
 }
