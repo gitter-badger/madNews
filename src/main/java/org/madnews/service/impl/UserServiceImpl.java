@@ -53,7 +53,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email).size() != 0;
 	}
 
-    @Override
+	@Override
+	public boolean hasUserByUsername(String username) {
+		return userRepository.findByUsername(username).size() != 0;
+	}
+
+	@Override
     public String encrypt(String pass) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

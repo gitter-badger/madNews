@@ -10,5 +10,6 @@ public interface UserService {
     void updateUser(User user);
     void deleteUser(User user);
     boolean hasUserByEmail(String email);
+    boolean hasUserByUsername(String username);
     String encrypt(String pass);
 }

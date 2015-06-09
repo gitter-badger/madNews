@@ -1,5 +1,7 @@
 package org.madnews.service;
 
+import java.util.List;
+
 import org.madnews.entity.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,4 +14,5 @@ public interface PostService {
     Iterable<Post> getPosts();
     Post getTodayTopNews();
 	Page<Post> getPostsByTag(Long tagId, Pageable pageable);
+	List<Post> readPostsOnMain();
 }

@@ -3,17 +3,21 @@ package org.madnews.controller;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.madnews.entity.Post;
+import org.madnews.entity.Tag;
 import org.madnews.entity.User;
 import org.madnews.service.PostService;
+import org.madnews.service.TagService;
 import org.madnews.service.UserService;
 import org.madnews.utils.EmailResponseWrapper;
 import org.madnews.utils.ResourceNotFoundException;
+import org.madnews.utils.UsernameResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,10 +30,17 @@ public class PrivateController {
     private PostService postService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TagService tagService;
 
-    @RequestMapping(value = "/news", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/news", method = RequestMethod.POST)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
+    }
+    
+    @RequestMapping(value = "/tags", method = RequestMethod.POST)
+    public Tag postTag(@RequestBody Tag tag){
+        return tagService.createTag(tag);
     }
     
     @RequestMapping(value ="/users/{id}", method = RequestMethod.GET)
@@ -61,23 +72,37 @@ public class PrivateController {
     	EmailResponseWrapper requestWrapper = new EmailResponseWrapper(email, result);
     	return new ResponseEntity<>(requestWrapper, HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/helpers/username-not-in-db/{username:^(?![_.])(?!.*[_.]{2})[A-Za-z0-9._]{3,15}$}", method = RequestMethod.GET)
+    public ResponseEntity<UsernameResponseWrapper> isUserByUsername(@PathVariable String username){
+    	boolean result = userService.hasUserByUsername(username);
+    	UsernameResponseWrapper responseWrapper = new UsernameResponseWrapper(username, result);
+    	return new ResponseEntity<>(responseWrapper, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value="/image", method=RequestMethod.POST)
     public @ResponseBody
-    String handleFileUpload(@RequestParam("file") MultipartFile file){
+    ResponseEntity<Map<String,String>> handleFileUpload(@RequestParam("file") MultipartFile file){
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File("src/main/webapp/images/"+file.getOriginalFilename())));
+                        new BufferedOutputStream(new FileOutputStream(new File("src/main/webapp/media_files/"+file.getOriginalFilename())));
                 stream.write(bytes);
                 stream.close();
-                return "{\"link\":\"//images//"+file.getOriginalFilename()+"\"}";
+                Map<String,String> imageLocation = new HashMap<>();
+                imageLocation.put("link", "media_files/" + file.getOriginalFilename());
+                return new ResponseEntity<>(imageLocation, HttpStatus.OK);
             } catch (Exception e) {
-                return "You failed to upload => " + e.getMessage();
+            	Map<String,String> error = new HashMap<>();
+            	error.put("error", "You failed to upload => " + e.getMessage());
+                return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-            return "You failed to upload because the file was empty.";
+        	Map<String,String> error = new HashMap<>();
+        	error.put("error", "You failed to upload because the file was empty.");
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
     }
 }

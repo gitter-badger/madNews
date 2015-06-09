@@ -15,6 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +46,7 @@ public class PublicController {
     @RequestMapping(value = "/news", method = RequestMethod.GET)
     @JsonView(View.ShortPost.class)
     public Iterable<?> getNews(){
-        List posts = (List) postService.getPosts();
+        List<Post> posts = postService.readPostsOnMain();
         if (posts.size()==0){
             throw new ResourceNotFoundException();
         }
@@ -55,7 +56,7 @@ public class PublicController {
     @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET)
     @JsonView(View.ShortPost.class)
     public ResponseEntity<PagedResources<Post>>  getPostsByTagId(@PathVariable Long id,
-    		@PageableDefault(page = 0, size = 10) Pageable pageable,
+    		@PageableDefault(page = 0, size = 25) Pageable pageable,
     		PagedResourcesAssembler assembler){
     	Page<Post> posts = postService.getPostsByTag(id, pageable);
         return new ResponseEntity<PagedResources<Post>>(assembler.toResource(posts), HttpStatus.OK);
