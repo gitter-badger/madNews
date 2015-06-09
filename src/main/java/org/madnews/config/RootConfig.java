@@ -23,7 +23,6 @@ import java.util.Properties;
  * аннотация @EnableTransactionManagement - включает поддержку транзакций.
  */
 @Configuration
-@EnableJpaRepositories("org.madnews.repository")
 @EnableTransactionManagement
 public class RootConfig {
 

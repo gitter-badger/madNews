@@ -1,5 +1,8 @@
 package org.madnews.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import org.madnews.entity.Post;
@@ -12,11 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value="/api/v1/private")
@@ -60,5 +60,24 @@ public class PrivateController {
     	boolean result = userService.hasUserByEmail(email);
     	EmailResponseWrapper requestWrapper = new EmailResponseWrapper(email, result);
     	return new ResponseEntity<>(requestWrapper, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/image", method=RequestMethod.POST)
+    public @ResponseBody
+    String handleFileUpload(@RequestParam("file") MultipartFile file){
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(new File("src/main/webapp/images/"+file.getOriginalFilename())));
+                stream.write(bytes);
+                stream.close();
+                return "{\"link\":\"//images//"+file.getOriginalFilename()+"\"}";
+            } catch (Exception e) {
+                return "You failed to upload => " + e.getMessage();
+            }
+        } else {
+            return "You failed to upload because the file was empty.";
+        }
     }
 }

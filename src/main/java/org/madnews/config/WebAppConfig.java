@@ -12,6 +12,8 @@ import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
@@ -21,7 +23,7 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan("org.madnews")
 @EnableSpringDataWebSupport
-@EnableJpaRepositories
+@EnableJpaRepositories("org.madnews.repository")
 public class WebAppConfig extends RepositoryRestMvcConfiguration {
 
     /**
@@ -63,5 +65,14 @@ public class WebAppConfig extends RepositoryRestMvcConfiguration {
       HateoasPageableHandlerMethodArgumentResolver resolver = super.pageableResolver();
       resolver.setOneIndexedParameters(true);
       return resolver;
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(1048576); //1 Mb
+        multipartResolver.setMaxInMemorySize(1048576);
+        multipartResolver.setMaxUploadSize(1048576);
+        return multipartResolver;
     }
 }
