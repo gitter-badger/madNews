@@ -9,10 +9,11 @@ import org.springframework.data.domain.Pageable;
 public interface PostService {
     Post createPost(Post post);
     Post readPost(Long id);
-    void updatePost(Post post);
-    void deletePost(Post post);
+    Post updatePost(Post post);
+    void deletePost(Long id);
     Iterable<Post> getPosts();
     Post getTodayTopNews();
 	Page<Post> getPostsByTag(Long tagId, Pageable pageable);
 	List<Post> readPostsOnMain();
+	Page<Post> readPostsNotShowOnMain(Pageable pageable);
 }

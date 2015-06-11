@@ -96,7 +96,7 @@ public class Application extends RepositoryRestMvcConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.httpBasic().and().authorizeRequests()
-                    .antMatchers("/index.html", "/api/v1/public/**", "/").permitAll().anyRequest()
+                    .antMatchers("/index.html", "/api/v1/public/**", "/api/v1/private/**", "/").permitAll().anyRequest()
                     .authenticated().and().csrf()
                     .csrfTokenRepository(csrfTokenRepository()).and()
                     .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);

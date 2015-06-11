@@ -88,4 +88,13 @@ public class PublicController {
         }
         return tag;
     }
+
+    @RequestMapping(value = "/archive", method = RequestMethod.GET,
+    		produces=MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(View.ShortPost.class)
+    public ResponseEntity<PagedResources<Post>>  getArchive(Pageable pageable,
+    		PagedResourcesAssembler assembler){
+    	Page<Post> posts = postService.readPostsNotShowOnMain(pageable);
+        return new ResponseEntity<PagedResources<Post>>(assembler.toResource(posts), HttpStatus.OK);
+    }
 }

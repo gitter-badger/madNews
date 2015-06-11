@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 /**
- * Entity Аннотация говорит о том, что данный класс должен быть отображен в базу данных.
+ * Entity РђРЅРЅРѕС‚Р°С†РёСЏ РіРѕРІРѕСЂРёС‚ Рѕ С‚РѕРј, С‡С‚Рѕ РґР°РЅРЅС‹Р№ РєР»Р°СЃСЃ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РѕС‚РѕР±СЂР°Р¶РµРЅ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….
  */
 @Entity
 @Table(name = "POSTS")
@@ -140,7 +140,7 @@ public class Post {
         this.position = position;
     }
 
-    public boolean isTopNews() {
+    public boolean getIsTopNews() {
         return isTopNews;
     }
 
@@ -148,7 +148,7 @@ public class Post {
         this.isTopNews = isTopNews;
     }
 
-    public boolean isFeatured() {
+    public boolean getIsFeatured() {
         return isFeatured;
     }
 
@@ -156,7 +156,7 @@ public class Post {
         this.isFeatured = isFeatured;
     }
 
-    public boolean isShowOnMain() {
+    public boolean getIsShowOnMain() {
         return isShowOnMain;
     }
 

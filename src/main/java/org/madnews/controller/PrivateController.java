@@ -16,11 +16,19 @@ import org.madnews.service.UserService;
 import org.madnews.utils.EmailResponseWrapper;
 import org.madnews.utils.ResourceNotFoundException;
 import org.madnews.utils.UsernameResponseWrapper;
+import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(value="/api/v1/private")
@@ -37,6 +45,17 @@ public class PrivateController {
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
+    
+    @RequestMapping(value = "/news/{id}", method = RequestMethod.PUT)
+    @JsonView(View.FullPost.class)
+	public Post updateNews(@PathVariable("id") Long id,@RequestBody Post post) {
+		return postService.updatePost(post);
+	}
+	
+	@RequestMapping(value = "/news/{id}", method = RequestMethod.DELETE)
+	public void deleteNews(@PathVariable("id") Long id) {
+		postService.deletePost(id);
+	}
     
     @RequestMapping(value = "/tags", method = RequestMethod.POST)
     public Tag postTag(@RequestBody Tag tag){
@@ -65,6 +84,16 @@ public class PrivateController {
     public User postUser(@RequestBody User user){
         return userService.createUser(user);
     }
+    
+    @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
+	public User updateUser(@PathVariable("id") Long id,@RequestBody User user) {
+		return userService.updateUser(user);
+	}
+	
+	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
+	public void deleteUser(@PathVariable("id") Long id) {
+		userService.deleteUser(id);
+	}
     
     @RequestMapping(value = "/helpers/email-not-in-db/{email:^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$}", method = RequestMethod.GET)
     public ResponseEntity<EmailResponseWrapper> isUserByEmail(@PathVariable String email){
@@ -104,5 +133,14 @@ public class PrivateController {
         	error.put("error", "You failed to upload because the file was empty.");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
+    }
+    
+    @RequestMapping(value = "/archive", method = RequestMethod.GET,
+    		produces=MediaType.APPLICATION_JSON_VALUE)
+    @JsonView(View.ShortPost.class)
+    public ResponseEntity<PagedResources<Post>>  getArchive(Pageable pageable,
+    		PagedResourcesAssembler assembler){
+    	Page<Post> posts = postService.readPostsNotShowOnMain(pageable);
+        return new ResponseEntity<PagedResources<Post>>(assembler.toResource(posts), HttpStatus.OK);
     }
 }

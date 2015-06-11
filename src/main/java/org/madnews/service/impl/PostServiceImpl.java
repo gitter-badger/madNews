@@ -30,24 +30,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void updatePost(Post post) {
+    public Post updatePost(Post post) {
         Post postFromDB = postRepository.findOne(post.getId());
-        postFromDB.setIsShowOnMain(post.isShowOnMain());
+        postFromDB.setIsShowOnMain(post.getIsShowOnMain());
         postFromDB.setHtml(post.getHtml());
-        postFromDB.setIsFeatured(post.isFeatured());
-        postFromDB.setIsTopNews(post.isTopNews());
+        postFromDB.setIsFeatured(post.getIsFeatured());
+        postFromDB.setIsTopNews(post.getIsTopNews());
         postFromDB.setMainImg(post.getMainImg());
         postFromDB.setPosition(post.getPosition());
         postFromDB.setShortText(post.getShortText());
         //postFromDB.setTimestamp(new Timestamp(System.currentTimeMillis()));
         postFromDB.setTitle(post.getTitle());
         postFromDB.setTags(post.getTags());
-        postRepository.save(postFromDB);
+        return postRepository.save(postFromDB);
     }
 
     @Override
-    public void deletePost(Post post) {
-        postRepository.delete(post);
+    public void deletePost(Long id) {
+        postRepository.delete(id);
     }
 
     @Override
@@ -70,4 +70,9 @@ public class PostServiceImpl implements PostService {
     public List<Post> readPostsOnMain() {
     	return postRepository.findByIsShowOnMainTrueOrderByTimestampDesc();
     }
+    
+	@Override
+	public Page<Post> readPostsNotShowOnMain(Pageable pageable) {
+		return postRepository.findByIsShowOnMainFalseOrderByTimestampDesc(pageable);
+	}
 }
