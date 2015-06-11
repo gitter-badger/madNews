@@ -53,7 +53,7 @@ public class PublicController {
         return posts;
     }
 
-    @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @JsonView(View.ShortPost.class)
     public ResponseEntity<PagedResources<Post>>  getPostsByTagId(@PathVariable Long id,
     		@PageableDefault(page = 0, size = 25) Pageable pageable,
