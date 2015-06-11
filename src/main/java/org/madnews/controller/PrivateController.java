@@ -18,7 +18,6 @@ import org.madnews.utils.ResourceNotFoundException;
 import org.madnews.utils.UsernameResponseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +33,7 @@ public class PrivateController {
     @Autowired
     private TagService tagService;
 
-    @RequestMapping(value = "/news", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/news", method = RequestMethod.POST)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
@@ -92,16 +91,16 @@ public class PrivateController {
                         new BufferedOutputStream(new FileOutputStream(new File("src/main/webapp/media_files/"+file.getOriginalFilename())));
                 stream.write(bytes);
                 stream.close();
-                Map<String,String> imageLocation = new HashMap<String,String>();
+                Map<String,String> imageLocation = new HashMap<>();
                 imageLocation.put("link", "media_files/" + file.getOriginalFilename());
                 return new ResponseEntity<>(imageLocation, HttpStatus.OK);
             } catch (Exception e) {
-            	Map<String,String> error = new HashMap<String,String>();
+            	Map<String,String> error = new HashMap<>();
             	error.put("error", "You failed to upload => " + e.getMessage());
                 return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         } else {
-        	Map<String,String> error = new HashMap<String,String>();
+        	Map<String,String> error = new HashMap<>();
         	error.put("error", "You failed to upload because the file was empty.");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
         }
