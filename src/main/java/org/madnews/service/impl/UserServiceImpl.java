@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
         userFromDB.setEmail(user.getEmail());
         userFromDB.setPermissions(user.getPermissions());
         userFromDB.setPosts(user.getPosts());
+        userFromDB.setEnabled(user.isEnabled());
         return userRepository.save(user);
     }
 

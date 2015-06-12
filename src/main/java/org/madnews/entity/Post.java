@@ -55,6 +55,7 @@ public class Post {
     private int position;
 
     @Column
+    @JsonView(View.ShortPost.class)
     @JsonIgnore
     private boolean isTopNews;
 

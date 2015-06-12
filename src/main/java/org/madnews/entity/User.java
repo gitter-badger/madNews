@@ -38,11 +38,13 @@ public class User {
     @Column
     private String password;
 
+    @Column
+    private boolean enabled;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "USERS_PERMISSIONS",
             joinColumns={@JoinColumn(name="USERID")},
             inverseJoinColumns={@JoinColumn(name="PERMISSIONID")})
-//    @JsonManagedReference("users-permissions")
     private Set<Permission> permissions;
 
     @OneToMany(mappedBy = "user")
@@ -98,4 +100,11 @@ public class User {
         this.posts = posts;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }
