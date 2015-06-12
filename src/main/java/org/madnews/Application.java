@@ -48,7 +48,6 @@ public class Application extends RepositoryRestMvcConfiguration {
         SpringApplication.run(Application.class, args);
     }
 
-
     private MappingJackson2HttpMessageConverter jacksonMessageConverter(){
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper mapper = new ObjectMapper();
@@ -58,9 +57,6 @@ public class Application extends RepositoryRestMvcConfiguration {
         return messageConverter;
     }
 
-    /**
-     * Для JSON
-     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         //Here we add our custom-configured HttpMessageConverter
@@ -79,11 +75,9 @@ public class Application extends RepositoryRestMvcConfiguration {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        factory.setPackagesToScan("org.madnews");
+        factory.setPackagesToScan("org.madnews.entity");
         factory.setDataSource(dataSource());
         factory.setJpaPropertyMap(new HashMap<String, Object>() {{
-            put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
-            put("hibernate.show_sql", "false");
             put("hibernate.hbm2ddl.auto", "update");
         }});
         factory.afterPropertiesSet();
@@ -105,16 +99,12 @@ public class Application extends RepositoryRestMvcConfiguration {
         private Filter csrfHeaderFilter() {
             return new OncePerRequestFilter() {
                 @Override
-                protected void doFilterInternal(HttpServletRequest request,
-                                                HttpServletResponse response, FilterChain filterChain)
-                        throws ServletException, IOException {
-                    CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class
-                            .getName());
+                protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+                    CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
                     if (csrf != null) {
                         Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
                         String token = csrf.getToken();
-                        if (cookie == null || token != null
-                                && !token.equals(cookie.getValue())) {
+                        if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                             cookie = new Cookie("XSRF-TOKEN", token);
                             cookie.setPath("/");
                             response.addCookie(cookie);
