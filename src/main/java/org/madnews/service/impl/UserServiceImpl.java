@@ -34,18 +34,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         User userFromDB = userRepository.findOne(user.getId());
         userFromDB.setUsername(user.getUsername());
         userFromDB.setEmail(user.getEmail());
         userFromDB.setPermissions(user.getPermissions());
         userFromDB.setPosts(user.getPosts());
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+    public void deleteUser(Long id) {
+        userRepository.delete(id);
     }
     
 	@Override

@@ -12,4 +12,5 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
     Post findByIsTopNewsTrueAndTimestampGreaterThan(Timestamp lastChanged);
     Page<Post> findAllByTagsIdOrderByTimestampDesc(Long tagId, Pageable pageable);
     List<Post> findByIsShowOnMainTrueOrderByTimestampDesc();
+    Page<Post> findByIsShowOnMainFalseOrderByTimestampDesc(Pageable pageable);
 }

@@ -7,8 +7,8 @@ public interface UserService {
     User createUser(User user);
     User readUser(Long id);
     Iterable<User> readUsers();
-    void updateUser(User user);
-    void deleteUser(User user);
+    User updateUser(User user);
+    void deleteUser(Long id);
     boolean hasUserByEmail(String email);
     boolean hasUserByUsername(String username);
     String encrypt(String pass);
