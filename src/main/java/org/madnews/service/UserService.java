@@ -11,5 +11,4 @@ public interface UserService {
     void deleteUser(Long id);
     boolean hasUserByEmail(String email);
     boolean hasUserByUsername(String username);
-    String encrypt(String pass);
 }

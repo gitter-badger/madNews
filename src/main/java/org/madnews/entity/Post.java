@@ -71,7 +71,6 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "userid", nullable = false)
-//    @JsonManagedReference("user-posts")
     @JsonView(View.FullPost.class)
     private User user;
 
@@ -84,7 +83,6 @@ public class Post {
     @JoinTable(name = "POSTS_TAGS",
             joinColumns={@JoinColumn(name="POSTID")},
             inverseJoinColumns={@JoinColumn(name="TAGID")})
-//    @JsonManagedReference("posts-tags")
     @JsonView(View.FullPost.class)
     private Set<Tag> tags;
 
