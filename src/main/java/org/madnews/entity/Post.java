@@ -70,7 +70,7 @@ public class Post {
     private boolean isShowOnMain;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "userid", nullable = false)
+    @JoinColumn(name = "userid")
     @JsonView(View.FullPost.class)
     private User user;
 

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.entity.User;
+import org.madnews.service.PermissionService;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
 import org.madnews.service.UserService;
@@ -25,6 +26,8 @@ import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,21 +43,64 @@ public class PrivateController {
     private UserService userService;
     @Autowired
     private TagService tagService;
+    @Autowired
+	private PermissionService permissionService;
 
     @RequestMapping(value = "/news", method = RequestMethod.POST)
-    public Post postNews(@RequestBody Post post){
-        return postService.createPost(post);
+    public ResponseEntity<Post> postNews(@RequestBody Post post){
+    	Authentication authentication = SecurityContextHolder.getContext().
+                getAuthentication();
+    	String username = authentication.getName();
+    	User user = userService.readUserByUsername(username);
+    	if (user.getPermissions().contains(permissionService.readPermissionByName("news-add-edit-delete-own"))) {
+			post.setUser(user);
+			return new ResponseEntity<>(postService.createPost(post), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(post, HttpStatus.FORBIDDEN);
+		}
     }
     
     @RequestMapping(value = "/news/{id}", method = RequestMethod.PUT)
     @JsonView(View.FullPost.class)
-	public Post updateNews(@PathVariable("id") Long id,@RequestBody Post post) {
-		return postService.updatePost(post);
+	public ResponseEntity<Post> updateNews(@PathVariable("id") Long id,@RequestBody Post post) {
+    	Authentication authentication = SecurityContextHolder.getContext().
+                getAuthentication();
+    	String username = authentication.getName();
+    	User user = userService.readUserByUsername(username);
+    	if (user.getPermissions().contains(permissionService.readPermissionByName("news-edit-any"))
+    			|| user.getPermissions().contains(permissionService.readPermissionByName("news-edit-delete-any "))) {
+			return new ResponseEntity<>(postService.updatePost(post), HttpStatus.OK);
+		} else if (user.getPermissions().contains(permissionService.readPermissionByName("news-add-edit-delete-own"))) {
+			if (user.getUsername().equals(post.getUser().getUsername())) {
+			return new ResponseEntity<>(postService.updatePost(post), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(post, HttpStatus.FORBIDDEN);
+			}
+    	} else {
+			return new ResponseEntity<>(post, HttpStatus.FORBIDDEN);
+		}
 	}
 	
 	@RequestMapping(value = "/news/{id}", method = RequestMethod.DELETE)
-	public void deleteNews(@PathVariable("id") Long id) {
-		postService.deletePost(id);
+	public ResponseEntity deleteNews(@PathVariable("id") Long id) {
+    	Authentication authentication = SecurityContextHolder.getContext().
+                getAuthentication();
+    	String username = authentication.getName();
+    	User user = userService.readUserByUsername(username);
+    	if (user.getPermissions().contains(permissionService.readPermissionByName("news-edit-delete-any "))) {
+    		postService.deletePost(id);
+    		return new ResponseEntity<>(HttpStatus.OK);
+		} else if (user.getPermissions().contains(permissionService.readPermissionByName("news-add-edit-delete-own"))) {
+			Post post = postService.readPost(id);
+			if (user.getUsername().equals(post.getUser().getUsername())) {
+				postService.deletePost(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
+    	} else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
     
     @RequestMapping(value = "/tags", method = RequestMethod.POST)
@@ -81,18 +127,43 @@ public class PrivateController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public User postUser(@RequestBody User user){
-        return userService.createUser(user);
+    public ResponseEntity<User> postUser(@RequestBody User user){
+    	Authentication authentication = SecurityContextHolder.getContext().
+                getAuthentication();
+    	String username = authentication.getName();
+    	User userLogin = userService.readUserByUsername(username);
+    	if (userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+			return new ResponseEntity<User>(userService.createUser(user), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+		}
     }
     
     @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-	public User updateUser(@PathVariable("id") Long id,@RequestBody User user) {
-		return userService.updateUser(user);
+	public ResponseEntity<User> updateUser(@PathVariable("id") Long id,@RequestBody User user) {
+    	Authentication authentication = SecurityContextHolder.getContext().
+                getAuthentication();
+    	String username = authentication.getName();
+    	User userLogin = userService.readUserByUsername(username);
+    	if (userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+			return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+		}
 	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public void deleteUser(@PathVariable("id") Long id) {
-		userService.deleteUser(id);
+	public ResponseEntity deleteUser(@PathVariable("id") Long id) {
+    	Authentication authentication = SecurityContextHolder.getContext().
+                getAuthentication();
+    	String username = authentication.getName();
+    	User userLogin = userService.readUserByUsername(username);
+    	if (userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+    		userService.deleteUser(id);
+    		return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
     
     @RequestMapping(value = "/helpers/email-not-in-db/{email:^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$}", method = RequestMethod.GET)
