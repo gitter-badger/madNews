@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -39,7 +38,6 @@ public class PostServiceImpl implements PostService {
         postFromDB.setMainImg(post.getMainImg());
         postFromDB.setPosition(post.getPosition());
         postFromDB.setShortText(post.getShortText());
-        //postFromDB.setTimestamp(new Timestamp(System.currentTimeMillis()));
         postFromDB.setTitle(post.getTitle());
         postFromDB.setTags(post.getTags());
         return postRepository.save(postFromDB);
@@ -56,9 +54,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getTodayTopNews() {
-        Timestamp timestamp24hEarlier = new Timestamp(System.currentTimeMillis()-24*60*60*1000);
-        return postRepository.findByIsTopNewsTrueAndTimestampGreaterThan(timestamp24hEarlier);
+    public Post getTopNews() {
+        return postRepository.findByIsTopNewsTrue();
     }
     
     @Override

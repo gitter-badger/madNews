@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.entity.User;
@@ -18,17 +19,10 @@ import org.madnews.utils.ResourceNotFoundException;
 import org.madnews.utils.UsernameResponseWrapper;
 import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping(value="/api/v1/private")
@@ -41,14 +35,15 @@ public class PrivateController {
     @Autowired
     private TagService tagService;
 
-    @RequestMapping(value = "/news", method = RequestMethod.POST)
+    @JsonView(View.EditablePost.class)
+	@RequestMapping(value = "/news", method = RequestMethod.POST)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
-    
-    @RequestMapping(value = "/news/{id}", method = RequestMethod.PUT)
-    @JsonView(View.FullPost.class)
-	public Post updateNews(@PathVariable("id") Long id,@RequestBody Post post) {
+
+    @JsonView(View.EditablePost.class)
+    @RequestMapping(value = "/news", method = RequestMethod.PUT)
+	public Post updateNews(@RequestBody Post post) {
 		return postService.updatePost(post);
 	}
 	
@@ -85,8 +80,8 @@ public class PrivateController {
         return userService.createUser(user);
     }
     
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.PUT)
-	public User updateUser(@PathVariable("id") Long id,@RequestBody User user) {
+    @RequestMapping(value = "/users", method = RequestMethod.PUT)
+	public User updateUser(@RequestBody User user) {
 		return userService.updateUser(user);
 	}
 	

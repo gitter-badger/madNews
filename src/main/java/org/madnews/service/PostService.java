@@ -12,7 +12,7 @@ public interface PostService {
     Post updatePost(Post post);
     void deletePost(Long id);
     Iterable<Post> getPosts();
-    Post getTodayTopNews();
+    Post getTopNews();
 	Page<Post> getPostsByTag(Long tagId, Pageable pageable);
 	List<Post> readPostsOnMain();
 	Page<Post> readPostsNotShowOnMain(Pageable pageable);

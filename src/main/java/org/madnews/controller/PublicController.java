@@ -1,7 +1,6 @@
 package org.madnews.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.service.PostService;
@@ -33,8 +32,18 @@ public class PublicController {
     @Autowired
     private TagService tagService;
 
-    @RequestMapping(value ="/news/{id}", method = RequestMethod.GET)
+    @JsonView(View.SimplePost.class)
+    @RequestMapping(value = "/news/top", method = RequestMethod.GET)
+    public Post getTopNews(){
+        Post post = postService.getTopNews();
+        if (post==null){
+            throw new ResourceNotFoundException();
+        }
+        return post;
+    }
+
     @JsonView(View.FullPost.class)
+    @RequestMapping(value ="/news/{id}", method = RequestMethod.GET)
     public Post getPost(@PathVariable Long id){
         Post post = postService.readPost(id);
         if (post==null){
@@ -43,8 +52,8 @@ public class PublicController {
         return post;
     }
 
+    @JsonView(View.SimplePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.GET)
-    @JsonView(View.ShortPost.class)
     public Iterable<?> getNews(){
         List<Post> posts = postService.readPostsOnMain();
         if (posts.size()==0){
@@ -53,22 +62,13 @@ public class PublicController {
         return posts;
     }
 
+
     @RequestMapping(value = "/news/tag/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @JsonView(View.ShortPost.class)
     public ResponseEntity<PagedResources<Post>>  getPostsByTagId(@PathVariable Long id,
     		@PageableDefault(page = 0, size = 25) Pageable pageable,
     		PagedResourcesAssembler assembler){
     	Page<Post> posts = postService.getPostsByTag(id, pageable);
         return new ResponseEntity<PagedResources<Post>>(assembler.toResource(posts), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/news/top", method = RequestMethod.GET)
-    public Post getTodayTopNews(){
-        Post post = postService.getTodayTopNews();
-        if (post==null){
-            throw new ResourceNotFoundException();
-        }
-        return post;
     }
 
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
@@ -89,9 +89,8 @@ public class PublicController {
         return tag;
     }
 
-    @RequestMapping(value = "/archive", method = RequestMethod.GET,
-    		produces=MediaType.APPLICATION_JSON_VALUE)
-    @JsonView(View.ShortPost.class)
+    @JsonView(View.SimplePost.class)
+    @RequestMapping(value = "/archive", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PagedResources<Post>>  getArchive(Pageable pageable,
     		PagedResourcesAssembler assembler){
     	Page<Post> posts = postService.readPostsNotShowOnMain(pageable);

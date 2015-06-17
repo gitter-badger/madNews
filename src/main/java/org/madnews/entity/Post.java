@@ -1,8 +1,6 @@
 package org.madnews.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
-
 import org.madnews.utils.View;
 
 import javax.persistence.Entity;
@@ -23,60 +21,55 @@ import javax.persistence.Version;
 import java.sql.Timestamp;
 import java.util.Set;
 
-/**
- * Entity РђРЅРЅРѕС‚Р°С†РёСЏ РіРѕРІРѕСЂРёС‚ Рѕ С‚РѕРј, С‡С‚Рѕ РґР°РЅРЅС‹Р№ РєР»Р°СЃСЃ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РѕС‚РѕР±СЂР°Р¶РµРЅ РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….
- */
 @Entity
 @Table(name = "POSTS")
 public class Post {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @JsonView(View.SimplePost.class)
     private Long id;
 
     @Column
-    @JsonView(View.ShortPost.class)
+    @JsonView(View.SimplePost.class)
     private String title;
 
     @Column
-    @JsonView(View.ShortPost.class)
+    @JsonView(View.SimplePost.class)
     private String shortText;
 
     @Column
-    @JsonView(View.FullPost.class)
+    @JsonView(View.SimplePost.class)
     private String html;
 
     @Column
-    @JsonView(View.ShortPost.class)
+    @JsonView(View.SimplePost.class)
     private String mainImg;
 
     @Column
-    @JsonView(View.ShortPost.class)
+    @JsonView(View.SimplePost.class)
     private int position;
 
     @Column
-    @JsonView(View.ShortPost.class)
-    @JsonIgnore
+    @JsonView(View.EditablePost.class)
     private boolean isTopNews;
 
     @Column
-    @JsonView(View.ShortPost.class)
-    @JsonIgnore
+    @JsonView(View.EditablePost.class)
     private boolean isFeatured;
 
     @Column
-    @JsonView(View.ShortPost.class)
-    @JsonIgnore
+    @JsonView(View.EditablePost.class)
     private boolean isShowOnMain;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "userid", nullable = false)
-    @JsonView(View.FullPost.class)
+    @JsonView(View.EditablePost.class)
     private User user;
 
     @Column
     @Version
-    @JsonView(View.ShortPost.class)
+    @JsonView(View.SimplePost.class)
     private Timestamp timestamp;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

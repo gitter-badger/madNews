@@ -1,6 +1,5 @@
 package org.madnews.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -37,7 +36,6 @@ public class User {
     private Set<Permission> permissions;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference("user-posts")
     @JsonIgnore
     private Set<Post> posts;
 
