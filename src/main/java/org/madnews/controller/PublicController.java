@@ -1,10 +1,12 @@
 package org.madnews.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
 import org.madnews.utils.ResourceNotFoundException;
+import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +32,7 @@ public class PublicController {
     @Autowired
     private TagService tagService;
 
-    //@JsonView(View.SimplePost.class)
+    @JsonView(View.SimplePost.class)
     @RequestMapping(value = "/news/top", method = RequestMethod.GET)
     public Post getTopNews(){
         Post post = postService.getTopNews();
@@ -40,7 +42,7 @@ public class PublicController {
         return post;
     }
 
-    //@JsonView(View.FullPost.class)
+    @JsonView(View.FullPost.class)
     @RequestMapping(value ="/news/{id}", method = RequestMethod.GET)
     public Post getPost(@PathVariable Long id){
         Post post = postService.readPost(id);
@@ -50,7 +52,7 @@ public class PublicController {
         return post;
     }
 
-    //@JsonView(View.SimplePost.class)
+    @JsonView(View.SimplePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.GET)
     public Iterable<?> getNews(){
         List<Post> posts = postService.readPostsOnMain();
@@ -86,7 +88,7 @@ public class PublicController {
         return tag;
     }
 
-   // @JsonView(View.SimplePost.class)
+    @JsonView(View.SimplePost.class)
     @RequestMapping(value = "/archive", method = RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PagedResources<Post>>  getArchive(Pageable pageable,
     		PagedResourcesAssembler assembler){

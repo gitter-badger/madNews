@@ -36,13 +36,13 @@ public class PrivateController {
     @Autowired
     private TagService tagService;
 
-    //@JsonView(View.EditablePost.class)
+    @JsonView(View.EditablePost.class)
 	@RequestMapping(value = "/news", method = RequestMethod.POST)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
 
-    //@JsonView(View.EditablePost.class)
+    @JsonView(View.EditablePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.PUT)
 	public Post updateNews(@RequestBody Post post) {
 		return postService.updatePost(post);
