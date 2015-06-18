@@ -118,7 +118,7 @@ public class PrivateController {
 
     @RequestMapping(value="/image", method=RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<Map<String,String>> handleFileUpload(@RequestParam("file") MultipartFile file){
+    ResponseEntity<Map<String,String>> handleFileUpload(@RequestParam("upload") MultipartFile file){
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
