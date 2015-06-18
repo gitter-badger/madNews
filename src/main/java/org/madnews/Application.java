@@ -16,10 +16,11 @@ import java.util.HashMap;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan("org.madnews")
+@ComponentScan
 @EnableSpringDataWebSupport
 @EnableJpaRepositories("org.madnews.repository")
 public class Application{
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
