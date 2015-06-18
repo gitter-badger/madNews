@@ -11,8 +11,6 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.security.web.header.writers.frameoptions.RegExpAllowFromStrategy;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -34,21 +32,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        HttpSessionCsrfTokenRepository tokenRepository = new HttpSessionCsrfTokenRepository();
-        tokenRepository.setHeaderName("X-XSRF-TOKEN");
-
-        http.httpBasic().and()
-                .headers()
-                .frameOptions()
-                .addHeaderWriter(new XFrameOptionsHeaderWriter(new RegExpAllowFromStrategy("/api/v1/private/image")))
+        http.httpBasic()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/admin.html/**", "/api/v1/private/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login.jsp")
-                .failureUrl("/login.jsp?error")
+                .loginProcessingUrl("/login.html")
+                .loginPage("/login.html")
+                .failureUrl("/login.html?error")
                 .usernameParameter("username")
                 .permitAll()
                 .and()
@@ -61,8 +54,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .and()
                 .csrf()
-                .csrfTokenRepository(tokenRepository).and()
-                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+                .csrfTokenRepository(csrfTokenRepository())
+                .and()
+                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
+                ;
     }
 
     @Autowired
@@ -82,6 +77,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 if (csrf != null) {
                     Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
                     String token = csrf.getToken();
+                    response.setHeader("X-XSRF-TOKEN", token);
+                    response.setHeader("X-Frame-Options", "SAMEORIGIN");
                     if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                         cookie = new Cookie("XSRF-TOKEN", token);
                         cookie.setPath("/");
