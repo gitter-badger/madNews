@@ -33,8 +33,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and().authorizeRequests()
-                .antMatchers("/", "/index.html", "/api/v1/public/**", "/static/**", "/media_files/**", "/partials-html/**").permitAll().anyRequest()
-                .authenticated().and().csrf()
+                .antMatchers("/admin.html/**", "/api/v1/private/**").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login.jsp")
+                .failureUrl("/login.jsp?error")
+                .usernameParameter("username")
+                .permitAll()
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .deleteCookies("remember-me")
+                .logoutSuccessUrl("/")
+                .permitAll()
+                .and()
+                .rememberMe()
+                .and()
+                .csrf()
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
     }
@@ -44,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth
                 .jdbcAuthentication().passwordEncoder(new BCryptPasswordEncoder())
                 .dataSource(dataSource).usersByUsernameQuery("select username, password, enabled from users where username=?")
-                .authoritiesByUsernameQuery("select u.username, p.name from users u, users_permissions up, ref_permissions p " +
+                .authoritiesByUsernameQuery("select u.username, p.name as role from users u, users_permissions up, ref_permissions p " +
                         "where username =? and u.ID=up.USERID and p.ID=up.PERMISSIONID");
     }
 

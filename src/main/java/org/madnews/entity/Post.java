@@ -27,6 +27,7 @@ public class Post {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @JsonView(View.SimplePost.class)
     private Long id;
 
     @Column
