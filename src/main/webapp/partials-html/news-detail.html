@@ -1,0 +1,17 @@
+<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+<div id="newsSingle" >
+	<h3 class="article-title hidden-xs">{{news_single.title}}</h3>
+	<h4 class="article-title visible-xs">{{news_single.title}}</h4>
+	<h5 class="date">{{news_single.timestamp | date:'MMMM d, H:MM'}}</h5>
+	<div ng-bind-html="news_single.html | sanitize">
+	</div>
+
+	<hr>
+	<h5 class="article-tags"> Tags:
+		<a href="#/by-tag/{{tag.id}}" ng-repeat="tag in news_single.tags">{{tag.name}}</a>
+	</h5>
+	<hr>
+	<div id="disqus_thread"></div>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</div>
+</div>

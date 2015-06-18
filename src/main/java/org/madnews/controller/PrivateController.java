@@ -21,6 +21,7 @@ import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,13 +36,13 @@ public class PrivateController {
     @Autowired
     private TagService tagService;
 
-    @JsonView(View.EditablePost.class)
+    //@JsonView(View.EditablePost.class)
 	@RequestMapping(value = "/news", method = RequestMethod.POST)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
 
-    @JsonView(View.EditablePost.class)
+    //@JsonView(View.EditablePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.PUT)
 	public Post updateNews(@RequestBody Post post) {
 		return postService.updatePost(post);
@@ -127,6 +128,19 @@ public class PrivateController {
         	Map<String,String> error = new HashMap<>();
         	error.put("error", "You failed to upload because the file was empty.");
             return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/users/{id}/password/{newPassword}/{oldPassword}", method = RequestMethod.PUT)
+    public ResponseEntity<User> updatePassword(@PathVariable("id") Long id,
+                                               @PathVariable("newPassword") String newPassword,
+                                               @PathVariable("oldPassword") String oldPassword) {
+        User user = userService.readUser(id);
+        if (!user.getPassword().equals(new BCryptPasswordEncoder().encode(oldPassword))) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else {
+            user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
     }
 }

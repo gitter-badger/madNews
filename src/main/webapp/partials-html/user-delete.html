@@ -1,0 +1,13 @@
+<div class="col-lg-9 nopadding user-delete-form">
+	<form name="userForm">
+
+		<h4>Уверен в том, что хочешь удалить пользователя <span>{{user.username}}</span>?</h4>	
+		<p> Будут удалены все связанные данные с этим пользователем.</p>
+
+		<br>
+		<button class="btn btn-danger" ng-click="delete_user()" >
+			Delete
+		</button>
+		<a href="#/users/" class="btn">Cancel</a>
+	</form>
+</div>

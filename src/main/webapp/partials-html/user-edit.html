@@ -1,0 +1,34 @@
+<div class="col-lg-9 nopadding user-edit-form">
+	<h3>Edit user</h3>
+	<form name="userForm">
+		<h4>{{user.username}}</h4>	
+
+		<div class="form-group">
+			<label>Permissions</label>
+			<div ng-repeat="permission in user.permissions">
+				<input type="checkbox" ng-model="permission.value">
+				<span class="checkbox-label">{{permission.full_name}}</span>
+			</div>
+		</div>
+
+		<div class="form-group" ng-class="{'form-error': userForm.password.$error.required}">
+			<label>Set new password for user</label>
+			<span ng-show="userForm.password.$error.required" class="help-inline">
+				[required]</span>
+			<input type="password" class="form-control" name="password" ng-model="user.password">
+		</div>
+		<div class="form-group" ng-class="{'form-error': userForm.password2.$error.required || userForm.password2.$error.match}">
+			<label>Retype password for user</label>
+			<span ng-show="userForm.password2.$error.required" class="help-inline">
+				[required]</span>
+			<span ng-show="userForm.password2.$error.match"> [passwords fields don't match]</span>
+			<input type="password" class="form-control" name="password2" ng-model="user.password2" match="user.password">
+		</div>
+
+		<br>
+		<button class="btn btn-default" ng-click="save()" ng-disabled="userForm.$invalid">
+			Save
+		</button>
+		<a href="#/users/" class="btn">Cancel</a>
+	</form>
+</div>

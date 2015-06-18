@@ -1,0 +1,27 @@
+<h3>Users</h3>
+<input type="text" ng-model="ctrl_search" class="form-control" placeholder="Quick search">
+<table class="table table-bordered admin-users-table">
+	<thead>
+		<tr>
+			<th>Username</th>
+			<th>Permissions</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr ng-repeat="user in users | filter:ctrl_search | orderBy:'username'">
+		<td><p class="username">{{user.username}}</p></td>
+		<td>
+			<ul>
+				<li ng-repeat="permission in user.permissions">
+				{{permission}}
+				</li>
+			</ul>
+		</td>
+		<td>
+			<a ng-href="#/users/edit/{{user.id}}"><span class="glyphicon glyphicon-pencil"></span></a>
+			<a ng-href="#/users/delete/{{user.id}}"><span class="glyphicon glyphicon-trash"></span></a>
+		</td>
+	</tr>
+	</tbody>
+</table>

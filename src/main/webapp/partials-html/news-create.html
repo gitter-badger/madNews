@@ -1,0 +1,85 @@
+<h3> Add news</h3>
+<ul class="nav nav-tabs">
+	<li role="presentation" ng-class="{'active':currentTab === 'editor'}">
+		<a href="javascript:void(0)" ng-click="currentTab='editor'">Editor</a>
+	</li>
+	<li role="presentation" ng-class="{'active':currentTab === 'preview'}">
+		<a href="javascript:void(0)" ng-click="currentTab='preview'">Preview</a>
+	</li>
+</ul>
+<form name="newsForm" ng-show="currentTab==='editor'" class="newsEditor">
+	<div class="row">
+		<div class="col-md-8 col-lg-7">
+			<div class="form-group" ng-class="{'form-error': newsForm.title.$error.required}">
+				<label>Title</label>
+				<span ng-show="newsForm.title.$error.required" class="help-inline">[required]</span>
+				<input type="text" class="form-control" name="title" ng-model="newsNew.title" required>
+			</div>
+
+			<div class="form-group">
+				<label>Abstract (for main page)</label>
+				<input type="text" class="form-control" name="shortText" ng-model="newsNew.shortText">
+			</div>
+		</div>
+		<div class="col-md-4 col-lg-5">
+		<div class="fileinput fileinput-new" data-provides="fileinput">
+			<div class="fileinput-new thumbnail">
+				<img src="/static/img/no_image.gif" alt="...">
+			</div>
+			<div class="fileinput-preview fileinput-exists thumbnail"></div>
+			<div class="btn-block">
+				<span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+	<div class="form-group" ng-class="{'form-error': newsForm.html.$error.required}">
+		<label>News body</label>
+		<span ng-show="newsForm.html.$error.required" class="help-inline">
+			[required]</span>
+		<div name="html" ckeditor="options" ng-model="newsNew.html" required></div>
+	</div>
+
+	<div class="form-group">
+		<label>Tags</label>
+		<div class="tag-cloud">
+			<a href="javascript:void(0)" class="tag-remove" 
+					ng-repeat="tag in newsNew.tags"
+					ng-click='removeTag(tag)'>
+				{{tag.name}}
+			</a>
+		</div>
+		<input type="text" ng-model="ctrl_search" class="form-control" placeholder="Quick search">
+		<div class="tag-cloud">
+			<a href="javascript:void(0)" class="tag-add" 
+					ng-repeat="tag in availableTags | filter:ctrl_search | orderBy:'name'"
+					ng-click='addTag(tag)'>
+				{{tag.name}}
+			</a>
+		</div>
+	</div>
+	<hr>
+	<button class="btn btn-default" ng-click="publish()" ng-disabled="newsForm.$invalid">
+		Publish
+	</button>
+	<a href="#/users/" class="btn">Cancel</a>
+</form>
+<div class='news-preview' ng-show="currentTab==='preview'">
+		<div id="newsSingle" >
+			<h3 class="article-title hidden-xs">{{newsNew.title}}</h3>
+			<h4 class="article-title visible-xs">{{newsNew.title}}</h4>
+			<h5 class="date">{{timestamp}}</h5>
+			<div ng-bind-html="newsNew.html | sanitize">
+			</div>
+			<hr>
+			<h5 class="article-tags"> Tags:
+				<a href="javascript:void(0)" ng-repeat="tag in newsNew.tags">
+					{{tag.name}}
+				</a>
+			</h5>
+		</div>
+
+</div>

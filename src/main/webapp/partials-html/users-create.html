@@ -1,0 +1,42 @@
+<div class="col-lg-9 nopadding">
+	<h3>Add new user</h3>
+	<form name="userForm">
+		<div class="form-group" ng-class="{'form-error': userForm.name.$error.required || userForm.name.$error.usernameExists}">
+			<label>Username</label>
+			<span ng-show="userForm.name.$error.required" class="help-inline">[required]</span>
+			<span ng-show="userForm.name.$pending.usernameExists">checking....</span>
+			<span ng-show="userForm.name.$error.usernameExists">[username exists already]</span>
+			<span	class="form-ok" 
+				ng-show="!userForm.name.$error.usernameExists && !userForm.name.$error.required">[username available]</span>
+			<input type="username" class="form-control" name="name" ng-model="user.username" username-available required>
+		</div>
+
+		<div class="form-group">
+			<label>Permissions</label>
+			<div ng-repeat="permission in user.permissions">
+				<input type="checkbox" ng-model="permission.value">
+				<span class="checkbox-label">{{permission.full_name}}</span>
+			</div>
+		</div>
+
+		<div class="form-group" ng-class="{'form-error': userForm.password.$error.required}">
+			<label>Set password for user</label>
+			<span ng-show="userForm.password.$error.required" class="help-inline">
+				[required]</span>
+			<input type="password" class="form-control" name="password" ng-model="user.password" required>
+		</div>
+		<div class="form-group" ng-class="{'form-error': userForm.password2.$error.required || userForm.password2.$error.match}">
+			<label>Retype password for user</label>
+			<span ng-show="userForm.password2.$error.required" class="help-inline">
+				[required]</span>
+			<span ng-show="userForm.password2.$error.match"> [passwords fields don't match]</span>
+			<input type="password" class="form-control" name="password2" ng-model="user.password2" match="user.password" required>
+		</div>
+
+		<br>
+		<button class="btn btn-default" ng-click="save()" ng-disabled="userForm.$invalid">
+			Create
+		</button>
+		<a href="#/users/" class="btn">Cancel</a>
+	</form>
+</div>
