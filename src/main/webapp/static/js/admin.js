@@ -81,7 +81,7 @@ app.controller('newsCreateCtrl', ["$scope", "$http", function ($scope, $http) {
 		allowedContent: true,
 		entities: false,
 		//uiColor: 'yellow',
-		filebrowserUploadUrl: "/upload",
+		filebrowserUploadUrl: "/api/v1/private/image",
 		toolbar:[
 			{ name: 'document', items: [ 'Source', '-', 'NewPage'] },
 			[ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ],
