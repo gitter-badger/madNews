@@ -36,8 +36,18 @@ public class PrivateController {
     @Autowired
     private TagService tagService;
 
+    @JsonView(View.SimplePost.class)
+    @RequestMapping(value = "/news", method = RequestMethod.GET)
+    public Iterable<?> getNews(){
+        List<Post> posts = (List<Post>) postService.getPosts();
+        if (posts.size()==0){
+            throw new ResourceNotFoundException();
+        }
+        return posts;
+    }
+
     @JsonView(View.EditablePost.class)
-	@RequestMapping(value = "/news", method = RequestMethod.POST)
+    @RequestMapping(value = "/news", method = RequestMethod.POST)
     public Post postNews(@RequestBody Post post){
         return postService.createPost(post);
     }
