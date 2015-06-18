@@ -38,6 +38,7 @@ public class Application{
         factory.setPackagesToScan("org.madnews.entity");
         factory.setDataSource(dataSource());
         factory.setJpaPropertyMap(new HashMap<String, Object>() {{
+            put("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
             put("hibernate.hbm2ddl.auto", "update");
         }});
         factory.afterPropertiesSet();
