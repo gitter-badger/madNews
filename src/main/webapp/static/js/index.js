@@ -99,7 +99,7 @@ app.controller("searchByTagCtrl", ["$scope", "$http","$routeParams", "PageSettin
 	$http.get("/api/v1/public/news/tag/"+url).
 		success(function(data, status, headers, config){
 			console.log(data);
-			$scope.news_list=data._embedded.posts;
+			$scope.news_list=data.content;
 			$scope.page=data.page;
 			$scope.page.pages=Array.apply(null, Array($scope.page.totalPages)).
 									map(function (_, i) {return i;});
