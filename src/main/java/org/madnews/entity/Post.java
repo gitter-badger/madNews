@@ -55,7 +55,7 @@ public class Post {
     private boolean isTopNews;
 
     @Column
-    @JsonView(View.EditablePost.class)
+    @JsonView(View.SimplePost.class)
     private boolean isFeatured;
 
     @Column

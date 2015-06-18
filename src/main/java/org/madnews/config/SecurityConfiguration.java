@@ -11,6 +11,8 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.header.writers.frameoptions.RegExpAllowFromStrategy;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -32,13 +34,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and().authorizeRequests()
+        HttpSessionCsrfTokenRepository tokenRepository = new HttpSessionCsrfTokenRepository();
+        tokenRepository.setHeaderName("X-XSRF-TOKEN");
+
+        http.httpBasic().and()
+                .headers()
+                .frameOptions()
+                .addHeaderWriter(new XFrameOptionsHeaderWriter(new RegExpAllowFromStrategy("/api/v1/private/image")))
+                .and()
+                .authorizeRequests()
                 .antMatchers("/admin.html/**", "/api/v1/private/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login.html")
-                .failureUrl("/login.html?error")
+                .loginPage("/login.jsp")
+                .failureUrl("/login.jsp?error")
                 .usernameParameter("username")
                 .permitAll()
                 .and()
@@ -51,7 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .and()
                 .csrf()
-                .csrfTokenRepository(csrfTokenRepository()).and()
+                .csrfTokenRepository(tokenRepository).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
     }
 
