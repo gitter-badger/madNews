@@ -81,18 +81,29 @@ app.controller("newsListCtrl", ["$scope", "$http", "PageSettings", function($sco
 app.controller("searchByTagCtrl", ["$scope", "$http","$routeParams", "PageSettings",
 			   function($scope, $http, $routeParams, PageSettings) {
 	var tagId=$routeParams.tagId;
+	var pageN=$routeParams.pageN;
 	$scope.tag={'id':tagId};
 	$scope.news_list=[];
-	$http.get("/api/v1/public/tag/").
+	$scope.settings=PageSettings;
+	$scope.page={};
+
+
+	$http.get("/api/v1/public/tags/"+tagId).
 		success(function(data, status, headers, config){
 			$scope.tag=data;
 	});
-	$http.get("/api/v1/public/news/tag/"+tagId).
+	var url=tagId;
+	if (pageN){
+		url=url+"?page="+pageN;
+	}
+	$http.get("/api/v1/public/news/tag/"+url).
 		success(function(data, status, headers, config){
 			console.log(data);
-			$scope.news_list=data;
+			$scope.news_list=data.content;
+			$scope.page=data.page;
+			$scope.page.pages=Array.apply(null, Array($scope.page.totalPages)).
+									map(function (_, i) {return i;});
 	});
-	$scope.settings=PageSettings;
 }]);
 
 
@@ -143,7 +154,10 @@ app.config(['$routeProvider',
         templateUrl: '/partials-html/search-by-tag.html',
         controller: 'searchByTagCtrl'
       }).
-
+      when('/by-tag/:tagId/page/:pageN', {
+        templateUrl: '/partials-html/search-by-tag.html',
+        controller: 'searchByTagCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });

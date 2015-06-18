@@ -28,7 +28,7 @@
 			</div>
 			<div class="fileinput-preview fileinput-exists thumbnail"></div>
 			<div class="btn-block">
-				<span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
+				<span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span class="fileinput-exists">Change</span><input type="file" file-model="newsNew.mainImg"></span>
 				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 			</div>
 		</div>
@@ -65,6 +65,10 @@
 	<button class="btn btn-default" ng-click="publish()" ng-disabled="newsForm.$invalid">
 		Publish
 	</button>
+	<button class="btn btn-default" ng-click="publishAsJson()" ng-disabled="newsForm.$invalid">
+		Publish as json
+	</button>
+
 	<a href="#/users/" class="btn">Cancel</a>
 </form>
 <div class='news-preview' ng-show="currentTab==='preview'">

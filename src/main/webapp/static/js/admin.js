@@ -3,14 +3,49 @@ PERMISSIONS={'user-management':'User management (user can create/edit/delete use
 			'news-add-edit-delete-any':"User can create, edit, delete any news.",
 			'news-edit-any':"User can edit any news."}
 			
-
+function jsonToFormData(json){
+	var fd = new FormData();
+	for (var key in json){
+		fd.append(key, json[key]);
+	}
+	return fd;
+}
 var app = angular.module("NW_AdminPage", ['ngRoute', 'validation.match', 'ckeditor']);
+
+app.config(['$httpProvider', function ($httpProvider) {
+	//$httpProvider.defaults.headers.post['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
+	//$httpProvider.defaults.headers.put['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
+    $httpProvider.defaults.xsrfCookieName = 'X-XSRF-TOKEN';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+}]);
 
 app.filter("sanitize", ['$sce', function($sce) {
   return function(htmlCode){
     return $sce.trustAsHtml(htmlCode);
   }
 }]);
+
+app.directive('fileModel', ['$parse', function ($parse) {
+	//
+	//	Binding html input-file to ng-model
+	//
+	//
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+
 
 app.directive('usernameAvailable', function($q) {
 	return {
@@ -81,13 +116,32 @@ app.controller('newsCreateCtrl', ["$scope", "$http", function ($scope, $http) {
 				$scope.newsNew.user=data ;
 				//delete $scope.newsNew.tags;
 				console.log($scope.newsNew);
-				$http.post("/api/v1/private/news/", $scope.newsNew).
+				$http.defaults.headers.post['X-XSRF-TOKEN'] = Cookies.get('XSRF-TOKEN');
+				$http.defaults.headers.put['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
+
+				$http.post("/api/v1/private/news/", jsonToFormData($scope.newsNew)).
 					success(function(data, status, headers, config){
 						$scope.newsNew = {"tags":[]} ;
 				});
 				
 		});
 	}
+	$scope.publishAsJson = function(){
+		$http.get("/api/v1/private/users/1").
+			success(function(data, status, headers, config){
+				$scope.newsNew.user=data ;
+				//delete $scope.newsNew.tags;
+				console.log($scope.newsNew);
+				$http.defaults.headers.post['X-XSRF-TOKEN'] = Cookies.get('XSRF-TOKEN');
+				$http.defaults.headers.put['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
+
+				$http.post("/api/v1/private/news/", $scope.newsNew).
+					success(function(data, status, headers, config){
+						$scope.newsNew = {"tags":[]} ;
+				});
+				
+		});
+	}	
 }]);
 
 

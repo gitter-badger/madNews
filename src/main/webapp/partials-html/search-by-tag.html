@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12" style="font-size:2em;"> 
-		<center>All news related to tag <b> {{tag.id}} </b></center>
+		<center>All news related to tag <b> {{tag.name}} </b></center>
 	</div>
 	<br>
 	<div id="newsBlock">
@@ -57,5 +57,32 @@
 				</h5>
 			</div>
 		</div>
+
+
+
+	</div>
+	<div class="col-lg-8 col-lg-offset-2 news-preview-line news-line-layout">
+		<nav class="newsPagination">
+			<ul class="pagination">
+				<li>
+				<a href="#/by-tag/{{tag.id}}/page/{{page.number-1}}" aria-label="Previous"
+					ng-class="{'disabled':page.number==0}">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+				</li>
+				<li ng-repeat="n in page.pages">
+				<a href="#/by-tag/{{tag.id}}/page/{{n}}"
+					ng-class="{'active':n==page.number}">
+					{{n+1}}
+				</a>
+				</li>
+				<li>
+				<a href="#/by-tag/{{tag.id}}/page/{{page.number+1}}" aria-label="Next"
+					ng-class="{'disabled':page.number+1==page.totalPages}">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </div>

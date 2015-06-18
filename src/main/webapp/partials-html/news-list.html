@@ -28,14 +28,8 @@
 			ng-repeat="news_single in news_list"
 			ng-show="settings.newsLayout === 'grid'">
 			<div class="preview" ng-class="{'featured': news_single.featured}">
-				<a  href="#/news/{{news_single.id}}"><img ng-if="news_single.small_img" src="{{news_single.small_img}}"> </a>
-				<h5 ng-if="news_single.small_img">
-					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
-					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
-					<span class="glyphicon glyphicon-comment comment-count" 
-						ng-if="news_single.comments_count"
-						aria-hidden="true">{{news_single.comments_count}}</span>
-				</h5>
+				<a  href="#/news/{{news_single.id}}"> </a>
+
 				<h5 ng-if="!news_single.small_img">
 					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
 					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
