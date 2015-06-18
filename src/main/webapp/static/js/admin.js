@@ -6,6 +6,11 @@ PERMISSIONS={'user-management':'User management (user can create/edit/delete use
 
 var app = angular.module("NW_AdminPage", ['ngRoute', 'validation.match', 'ckeditor']);
 
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+}]);
+
 app.filter("sanitize", ['$sce', function($sce) {
   return function(htmlCode){
     return $sce.trustAsHtml(htmlCode);

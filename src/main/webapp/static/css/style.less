@@ -636,3 +636,30 @@ hr{
 		font-weight: bold;
 	}
 }
+
+
+.newsPagination{
+	text-align: center;
+	.pagination{
+		a{
+			background-color:lighten(@bgColor, 10%);
+			border-color: @bgColor;
+			color:@mainTextColor;
+			&:hover, &:active, &:focus{
+				background-color: darken(@bgColor, 10%);
+				border-color: lighten(@bgColor, 10%);
+				color: @mainTextColor;
+			}
+		}
+		.active{
+			pointer-events:none;
+			background-color:@mainColor;
+		}
+		.disabled{
+			pointer-events:none;
+			background-color:lighten(@bgColor, 20%);
+			color:lighten(@mainTextColor, 10%);
+
+		}
+	}
+}
