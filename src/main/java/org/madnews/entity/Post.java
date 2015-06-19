@@ -27,7 +27,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinTable;
-import javax.persistence.Version;
 
 import java.sql.Timestamp;
 import java.util.Date;

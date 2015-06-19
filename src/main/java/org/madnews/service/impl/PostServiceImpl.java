@@ -42,6 +42,7 @@ public class PostServiceImpl implements PostService {
         postFromDB.setShortText(post.getShortText());
         postFromDB.setTitle(post.getTitle());
         postFromDB.setTags(post.getTags());
+        postFromDB.setTimestamp(postFromDB.getTimestamp());
         return postRepository.save(postFromDB);
     }
 
