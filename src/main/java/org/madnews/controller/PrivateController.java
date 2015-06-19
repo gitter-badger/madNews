@@ -8,13 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonView;
+
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
 import org.madnews.entity.User;
+import org.madnews.service.PermissionService;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
 import org.madnews.service.UserService;
 import org.madnews.utils.EmailResponseWrapper;
+import org.madnews.utils.GetUser;
 import org.madnews.utils.ResourceNotFoundException;
 import org.madnews.utils.UsernameResponseWrapper;
 import org.madnews.utils.View;
@@ -27,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping(value="/api/v1/private")
-public class PrivateController {
+public class PrivateController extends GetUser{
 
     @Autowired
     private PostService postService;
@@ -35,6 +38,8 @@ public class PrivateController {
     private UserService userService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private PermissionService permissionService;
 
     @JsonView(View.SimplePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.GET)
@@ -48,19 +53,50 @@ public class PrivateController {
 
     @JsonView(View.EditablePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.POST)
-    public Post postNews(@RequestBody Post post){
-        return postService.createPost(post);
+    public ResponseEntity<Post> postNews(@RequestBody Post post){
+    	User user = userService.readUserByUsername(GettingUser());
+    	if (user.getPermissions().contains(permissionService.readPermissionByName("news-add-edit-delete-own"))) {
+			post.setUser(user);
+			return new ResponseEntity<>(postService.createPost(post), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(post, HttpStatus.FORBIDDEN);
+		}
     }
-
+    
     @JsonView(View.EditablePost.class)
     @RequestMapping(value = "/news", method = RequestMethod.PUT)
-	public Post updateNews(@RequestBody Post post) {
-		return postService.updatePost(post);
-	}
-	
+	public ResponseEntity<Post> updateNews(@RequestBody Post post) {
+    	User user = userService.readUserByUsername(GettingUser());
+    	if (user.getPermissions().contains(permissionService.readPermissionByName("news-edit-any"))
+    			|| user.getPermissions().contains(permissionService.readPermissionByName("news-edit-delete-any "))) {
+			return new ResponseEntity<>(postService.updatePost(post), HttpStatus.OK);
+		} else if (user.getPermissions().contains(permissionService.readPermissionByName("news-add-edit-delete-own"))) {
+			if (user.getUsername().equals(post.getUser().getUsername())) {
+			return new ResponseEntity<>(postService.updatePost(post), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(post, HttpStatus.FORBIDDEN);
+			}
+    	} else {
+			return new ResponseEntity<>(post, HttpStatus.FORBIDDEN);
+		}
+	}	
 	@RequestMapping(value = "/news/{id}", method = RequestMethod.DELETE)
-	public void deleteNews(@PathVariable("id") Long id) {
-		postService.deletePost(id);
+	public ResponseEntity deleteNews(@PathVariable("id") Long id) {
+		User user = userService.readUserByUsername(GettingUser());
+    	if (user.getPermissions().contains(permissionService.readPermissionByName("news-edit-delete-any "))) {
+    		postService.deletePost(id);
+    		return new ResponseEntity<>(HttpStatus.OK);
+		} else if (user.getPermissions().contains(permissionService.readPermissionByName("news-add-edit-delete-own"))) {
+			Post post = postService.readPost(id);
+			if (user.getUsername().equals(post.getUser().getUsername())) {
+				postService.deletePost(id);
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			}
+    	} else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
     
     @RequestMapping(value = "/tags", method = RequestMethod.POST)
@@ -87,18 +123,34 @@ public class PrivateController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public User postUser(@RequestBody User user){
-        return userService.createUser(user);
+    public ResponseEntity<User> postUser(@RequestBody User user){
+    	User userLogin = userService.readUserByUsername(GettingUser());
+    	if (userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+			return new ResponseEntity<User>(userService.createUser(user), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+		}
     }
-    
+     
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
-	public User updateUser(@RequestBody User user) {
-		return userService.updateUser(user);
+	public ResponseEntity<User> updateUser(@RequestBody User user) {
+    	User userLogin = userService.readUserByUsername(GettingUser());
+    	if (userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+			return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<User>(user, HttpStatus.FORBIDDEN);
+		}
 	}
 	
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public void deleteUser(@PathVariable("id") Long id) {
-		userService.deleteUser(id);
+	public ResponseEntity deleteUser(@PathVariable("id") Long id) {
+    	User userLogin = userService.readUserByUsername(GettingUser());
+    	if (userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+    		userService.deleteUser(id);
+    		return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+		}
 	}
     
     @RequestMapping(value = "/helpers/email-not-in-db/{email:^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$}", method = RequestMethod.GET)
@@ -146,11 +198,13 @@ public class PrivateController {
                                                @PathVariable("newPassword") String newPassword,
                                                @PathVariable("oldPassword") String oldPassword) {
         User user = userService.readUser(id);
-        if (!user.getPassword().equals(new BCryptPasswordEncoder().encode(oldPassword))) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        User userLogin = userService.readUserByUsername(GettingUser());
+        if (new BCryptPasswordEncoder().matches(oldPassword,user.getPassword())
+        		|| userLogin.getPermissions().contains(permissionService.readPermissionByName("user-management"))) {
+			user.setPassword(newPassword);
+			return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
         } else {
-            user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-            return new ResponseEntity<>(user, HttpStatus.OK);
+        	return new ResponseEntity<>(user,HttpStatus.BAD_REQUEST);
         }
     }
 }

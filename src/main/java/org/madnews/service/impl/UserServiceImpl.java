@@ -54,6 +54,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean hasUserByUsername(String username) {
-		return userRepository.findByUsername(username).size() != 0;
+		return userRepository.findByUsername(username) != null;
+	}
+
+	@Override
+	public User readUserByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 }

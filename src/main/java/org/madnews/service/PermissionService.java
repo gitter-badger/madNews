@@ -8,4 +8,5 @@ public interface PermissionService {
     void updatePermission(Permission permission);
     void deletePermission(Permission permission);
     Iterable<?> getPermissions();
+	Permission readPermissionByName(String name);
 }

@@ -20,6 +20,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post createPost(Post post) {
+    	preUpdate(post);
         return postRepository.save(post);
     }
 
@@ -34,6 +35,7 @@ public class PostServiceImpl implements PostService {
         postFromDB.setIsShowOnMain(post.getIsShowOnMain());
         postFromDB.setHtml(post.getHtml());
         postFromDB.setIsFeatured(post.getIsFeatured());
+        preUpdate(post);
         postFromDB.setIsTopNews(post.getIsTopNews());
         postFromDB.setMainImg(post.getMainImg());
         postFromDB.setPosition(post.getPosition());
@@ -72,4 +74,13 @@ public class PostServiceImpl implements PostService {
 	public Page<Post> readPostsNotShowOnMain(Pageable pageable) {
 		return postRepository.findByIsShowOnMainFalseOrderByTimestampDesc(pageable);
 	}
+	
+    void preUpdate(Post post) {
+    	if (post.getIsTopNews()) {
+	    	List<Post> posts = (List<Post>) postRepository.findAll();
+	    	for (Post p : posts) {
+	    		p.setIsTopNews(false);
+	    	}
+    	}
+    }
 }

@@ -41,4 +41,9 @@ public class PermissionServiceImpl implements PermissionService {
     public Iterable<Permission> getPermissions() {
         return permissionRepository.findAll();
     }
+
+	@Override
+	public Permission readPermissionByName(String name) {
+		return permissionRepository.findOneByName(name);
+	}
 }
