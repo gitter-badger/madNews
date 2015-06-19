@@ -8,6 +8,7 @@
 	</li>
 </ul>
 <form name="newsForm" ng-show="currentTab==='editor'" class="newsEditor">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	<div class="row">
 		<div class="col-md-8 col-lg-7">
 			<div class="form-group" ng-class="{'form-error': newsForm.title.$error.required}">

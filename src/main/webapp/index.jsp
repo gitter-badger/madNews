@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en" ng-app="NW_MainPage" ng-controller="mainPageCtrl">
   <head>
     <meta charset="utf-8">

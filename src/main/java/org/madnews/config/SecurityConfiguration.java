@@ -35,14 +35,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/admin.html/**", "/api/v1/private/**").authenticated()
+                .antMatchers("/admin**", "/api/v1/private/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login.html")
-                .loginPage("/login.html")
-                .failureUrl("/login.html?error")
-                .usernameParameter("username")
+                .loginPage("/login")
+                .failureUrl("/login?error")
                 .permitAll()
                 .and()
                 .logout()
@@ -56,8 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .csrfTokenRepository(csrfTokenRepository())
                 .and()
-                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
-                ;
+                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
     }
 
     @Autowired
@@ -78,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
                     String token = csrf.getToken();
                     response.setHeader("X-XSRF-TOKEN", token);
-                    response.setHeader("X-Frame-Options", "SAMEORIGIN");
+                    response.setHeader("X-Frame-Options", "ALLOW");
                     if (cookie == null || token != null && !token.equals(cookie.getValue())) {
                         cookie = new Cookie("XSRF-TOKEN", token);
                         cookie.setPath("/");

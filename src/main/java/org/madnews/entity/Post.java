@@ -59,7 +59,7 @@ public class Post {
     private boolean isFeatured;
 
     @Column
-    @JsonView(View.EditablePost.class)
+    @JsonView(View.SimplePost.class)
     private boolean isShowOnMain;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
