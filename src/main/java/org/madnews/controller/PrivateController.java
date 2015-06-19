@@ -145,11 +145,11 @@ public class PrivateController {
                                                @PathVariable("newPassword") String newPassword,
                                                @PathVariable("oldPassword") String oldPassword) {
         User user = userService.readUser(id);
-        if (!user.getPassword().equals(new BCryptPasswordEncoder().encode(oldPassword))) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (!new BCryptPasswordEncoder().matches(oldPassword,user.getPassword())) {
+            return new ResponseEntity<>(user,HttpStatus.BAD_REQUEST);
         } else {
-            user.setPassword(new BCryptPasswordEncoder().encode(newPassword));
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            user.setPassword(newPassword);
+            return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
         }
     }
 }
