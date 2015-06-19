@@ -118,7 +118,7 @@ public class PrivateController {
 
     @RequestMapping(value="/image", method=RequestMethod.POST)
     public @ResponseBody
-    ResponseEntity<Map<String,String>> handleFileUpload(@RequestParam("upload") MultipartFile file){
+    String handleFileUpload(@RequestParam("upload") MultipartFile file){
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
@@ -126,22 +126,17 @@ public class PrivateController {
                         new BufferedOutputStream(new FileOutputStream(new File("src/main/webapp/media_files/"+file.getOriginalFilename())));
                 stream.write(bytes);
                 stream.close();
-                Map<String,String> imageLocation = new HashMap<>();
-                imageLocation.put("link", "<div class=\"thumbnail\">\n" +
+                String imageLocation = "<div class=\"thumbnail\">\n" +
                         "\n" +
-                        "<img src=\"media_files/to_img.jpg"+file.getOriginalFilename()+"\"/>\n" +
+                        "<img src=\"/media_files/"+file.getOriginalFilename()+"\"/>\n" +
                         "\n" +
-                        "</div>");
-                return new ResponseEntity<>(imageLocation, HttpStatus.OK);
+                        "</div>";
+                return imageLocation;
             } catch (Exception e) {
-            	Map<String,String> error = new HashMap<>();
-            	error.put("error", "You failed to upload => " + e.getMessage());
-                return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+                return "You failed to upload => " + e.getMessage();
             }
         } else {
-        	Map<String,String> error = new HashMap<>();
-        	error.put("error", "You failed to upload because the file was empty.");
-            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+            return "You failed to upload because the file was empty.";
         }
     }
 
