@@ -50,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .rememberMe()
-                .and()
+                .and().headers().frameOptions().disable()
                 .csrf()
                 .csrfTokenRepository(csrfTokenRepository())
                 .and()
