@@ -30,6 +30,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Version;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -94,7 +95,6 @@ public class Post {
     private User user;
 
     @Column
-    @Version
     @JsonView(View.SimplePost.class)
     private Timestamp timestamp;
 
@@ -108,6 +108,7 @@ public class Post {
     @PrePersist
     void preInsert() {
     	if (position == 0) position = -1;
+        timestamp = new Timestamp(new Date().getTime());
     }
 
     public Long getId() {
