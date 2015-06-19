@@ -1,11 +1,14 @@
 package org.madnews.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+
 import org.madnews.entity.Post;
 import org.madnews.entity.Tag;
+import org.madnews.search.PostSearch;
 import org.madnews.service.PostService;
 import org.madnews.service.TagService;
 import org.madnews.utils.ResourceNotFoundException;
+import org.madnews.utils.SearchResponseWrapper;
 import org.madnews.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +34,8 @@ public class PublicController {
     private PostService postService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private PostSearch postSearch;
 
     @JsonView(View.SimplePost.class)
     @RequestMapping(value = "/news/top", method = RequestMethod.GET)
@@ -94,5 +99,13 @@ public class PublicController {
     		PagedResourcesAssembler assembler){
     	Page<Post> posts = postService.readPostsNotShowOnMain(pageable);
         return new ResponseEntity<PagedResources<Post>>(assembler.toResource(posts), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/news/search/{text}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @JsonView(View.ShortPost.class)
+    public ResponseEntity<SearchResponseWrapper>  doSearch(@PathVariable String text,
+    		Pageable pageable){
+    	SearchResponseWrapper posts = postSearch.search(text, pageable.getPageSize(), pageable.getOffset());
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 }
