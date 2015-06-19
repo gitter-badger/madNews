@@ -12,6 +12,7 @@
 	<!-- JavaScript -->
     <script src="/static/jquery/jquery-2.1.3.js"></script>
     <script src="/static/jquery/js.cookie.js"></script>
+    <script src="/static/sortable/Sortable.min.js"></script>
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
     <script src="/static/less/less.min.js"></script>
@@ -101,7 +102,7 @@
 											ng-click="dashboardTab='main-page-top-news'">
 									Top news
 								</a>
-								<a href="#" class="list-group-item subsection"  
+								<a href="#/news/list-editor/" class="list-group-item subsection"  
 											ng-class="{active: dashboardTab === 'main-page-layout'}" 
 											ng-click="dashboardTab='main-page-layout'">
 									<span class="glyphicon glyphicon-th"></span>

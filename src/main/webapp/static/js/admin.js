@@ -13,8 +13,6 @@ function jsonToFormData(json){
 var app = angular.module("NW_AdminPage", ['ngRoute', 'validation.match', 'ckeditor']);
 
 app.config(['$httpProvider', function ($httpProvider) {
-	//$httpProvider.defaults.headers.post['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
-	//$httpProvider.defaults.headers.put['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
     $httpProvider.defaults.xsrfCookieName = 'X-XSRF-TOKEN';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }]);
@@ -98,6 +96,8 @@ app.controller('newsCreateCtrl', ["$scope", "$http", function ($scope, $http) {
 			{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },		
 		]
 	};
+	$('meta[name="csrf-param"]').attr(Cookies.get('XSRF-TOKEN'));
+	$('meta[name="csrf-token"]').attr(Cookies.get('XSRF-TOKEN'));
 
 	$scope.addTag = function(tag){
 		if ($.inArray(tag, $scope.newsNew.tags)==-1){
@@ -132,9 +132,10 @@ app.controller('newsCreateCtrl', ["$scope", "$http", function ($scope, $http) {
 				$scope.newsNew.user=data ;
 				//delete $scope.newsNew.tags;
 				console.log($scope.newsNew);
+
 				$http.defaults.headers.post['X-XSRF-TOKEN'] = Cookies.get('XSRF-TOKEN');
 				$http.defaults.headers.put['X-CSRFToken'] = Cookies.get('XSRF-TOKEN');
-
+				
 				$http.post("/api/v1/private/news/", $scope.newsNew).
 					success(function(data, status, headers, config){
 						$scope.newsNew = {"tags":[]} ;
@@ -237,7 +238,142 @@ app.controller("usersDeleteCtrl", ["$scope","$location", "$routeParams",  functi
 	}
 }]);
 
+app.controller("newsListEditCtrl", ["$scope","$location", "$http",  function($scope, $location, $http) {
+	
+	$scope.newsOnMain=[];
+	$scope.newsNotOnMain=[];
+	var allNews={};
 
+	
+	$http.get("/api/v1/private/news").
+		success(function(data, status, headers, config){
+			for (var obj in data){
+				console.log(obj);
+				
+			}
+			$scope.newsOnMain=data;
+			$scope.newsOnMainCopy=data;
+			$scope.newsNotOnMainCopy=[];
+			for (var i = 0; i < data.length; i++) {
+				allNews[data[i].id]=data[i];
+			};
+			var components = document.getElementById("newsWithPositions");
+
+			var w=$scope.$watch('newsOnMainCopy',function(){});
+			w();
+			w=$scope.$watch('newsNotOnMainCopy',function(){});
+			w();
+
+			var sortable = Sortable.create(components, 
+										   {group:"news",
+											   sort: true,
+											   animation: 100,
+
+											   onEnd: function (/**Event*/evt) {
+												   // передвигаем компонент по окончанию
+												   // d&d.
+												   //
+												   /*
+												   components = self.objs[index].components;
+												   if (evt.newIndex==evt.oldIndex){
+													   return;
+												   }
+												   if (components.length>1){
+
+													   var component_new=components[evt.oldIndex];
+													   components.splice(evt.oldIndex, 1);
+													   components.splice(evt.newIndex, 0, component_new);
+													   self.objs[index].components=components;
+
+													   self.save();
+												   }
+												   */
+											   },
+											   // Element is dropped into the list from another list
+											   onAdd: function (/**Event*/evt) {
+												   var oldIndex=evt.oldIndex;
+												   var itemEl = evt.item;  // dragged HTMLElement
+												   evt.from;  // previous list
+												   console.log(evt.from);
+												   console.log(evt.from.dataset);
+												   
+													// revome object from $scope.newsNotOnMain
+												   //
+												   $scope.$apply(function(){
+														var obj=$scope.newsNotOnMain[oldIndex];
+														obj.isFeatured=false;
+														obj.showOnMain=false;
+														obj.position=-1;
+														//delete obj.$$hashKey;
+														//delete $scope.newsNotOnMain[oldIndex];
+														$scope.newsOnMain.push(obj);
+												   });											   
+												   // + indexes from onEnd
+											   },
+			});
+			var components2 = document.getElementById("newsWithoutPositions");
+
+			var sortable2 = Sortable.create(components2, 
+										   {group:"news",
+											   sort: true,
+											   animation: 100,
+
+											   onEnd: function (/**Event*/evt) {
+												   // передвигаем компонент по окончанию
+												   // d&d.
+												   //
+												   /*
+												   components = self.objs[index].components;
+												   if (evt.newIndex==evt.oldIndex){
+													   return;
+												   }
+												   if (components.length>1){
+
+													   var component_new=components[evt.oldIndex];
+													   components.splice(evt.oldIndex, 1);
+													   components.splice(evt.newIndex, 0, component_new);
+													   self.objs[index].components=components;
+
+													   self.save();
+												   }
+												   */
+											   },
+											   // Element is dropped into the list from another list
+											   onAdd: function (/**Event*/evt) {
+												   var oldIndex=evt.oldIndex;
+												   var itemEl = evt.item;  // dragged HTMLElement
+												   evt.from;  // previous list
+												   
+												   console.log(itemEl);
+												   console.log(evt.from);
+												   console.log(evt.from.dataset);
+												   
+												   // revome object from $scope.newsOnMain
+												   //
+												   $scope.$apply(function(){
+														var obj=$scope.newsOnMain[oldIndex];
+														obj.isFeatured=false;
+														obj.showOnMain=false;
+														obj.position=-1;
+														//delete $scope.newsOnMain[oldIndex];
+														//delete obj.$$hashKey;
+														$scope.newsNotOnMain.push(obj);
+												   });
+											   },
+			});
+
+
+	});
+	$scope.toggle = function(value){
+		if(value>-1){
+			return -1;
+		}
+		else{
+			return 1;
+		}
+	}
+
+}]);
 
 app.config(['$routeProvider',
   function($routeProvider) {
@@ -263,6 +399,10 @@ app.config(['$routeProvider',
       }).
 
 
+      when('/news/list-editor/', {
+        templateUrl: '/partials-html/news-list-editor.html',
+        controller: 'newsListEditCtrl'
+      }).
       when('/news/create/', {
         templateUrl: '/partials-html/news-create.html',
         controller: 'newsCreateCtrl'

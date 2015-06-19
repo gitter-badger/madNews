@@ -27,7 +27,7 @@
 		<div class="col-xs-4 col-md-3 news-preview hidden-xs news-grid-layout"
 			ng-repeat="news_single in news_list"
 			ng-show="settings.newsLayout === 'grid'">
-			<div class="preview" ng-class="{'featured': news_single.featured}">
+			<div class="preview" ng-class="{'featured': news_single.isFeatured}">
 				<a  href="#/news/{{news_single.id}}"> </a>
 
 				<h5 ng-if="!news_single.small_img">
@@ -45,7 +45,7 @@
 		<div class="col-lg-8 col-lg-offset-2 news-preview-line hidden-xs news-line-layout"
 			ng-repeat="news_single in news_list"
 			ng-show="settings.newsLayout === 'line'">
-			<div class="preview" ng-class="{'featured': news_single.featured}">
+			<div class="preview" ng-class="{'featured': news_single.isFeatured}">
 				<h5>
 					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
 					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
@@ -60,7 +60,7 @@
 		</div>
 		<div class="col-xs-12 col-md-3 news-preview-xs visible-xs"
 			ng-repeat="news_single in news_list">
-			<div class="preview" ng-class="{'featured': news_single.featured}">
+			<div class="preview" ng-class="{'featured': news_single.isFeatured}">
 				<h5>
 					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
 					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>

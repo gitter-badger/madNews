@@ -51,9 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .rememberMe()
                 .and().headers().frameOptions().disable()
-                .csrf()
-                .csrfTokenRepository(csrfTokenRepository())
-                .and()
+                .csrf().disable()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
     }
 
