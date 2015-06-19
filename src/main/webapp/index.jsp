@@ -54,16 +54,7 @@
 				<div class="collapse navbar-collapse" id="navbar-main-collapse">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<form class="navbar-right navbar-form" role="search">
-								<div class="input-group">
-									<input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-									<div class="input-group-btn">
-										<button class="btn btn-default" type="submit">
-											<i class="glyphicon glyphicon-search"></i>
-										</button>
-									</div>
-								</div>
-							</form>
+
 						</li>
 						<li class="hidden-xs">
 							<a class="button glyphicon glyphicon-cog" data-toggle="dropdown" aria-expanded="false"></a>
