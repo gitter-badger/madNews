@@ -96,8 +96,8 @@ app.controller('newsCreateCtrl', ["$scope", "$http", function ($scope, $http) {
 			{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },		
 		]
 	};
-	$('meta[name="csrf-param"]').attr(Cookies.get('XSRF-TOKEN'));
-	$('meta[name="csrf-token"]').attr(Cookies.get('XSRF-TOKEN'));
+	//$('meta[name="csrf-param"]').attr(Cookies.get('XSRF-TOKEN'));
+	//$('meta[name="csrf-token"]').attr(Cookies.get('XSRF-TOKEN'));
 
 	$scope.addTag = function(tag){
 		if ($.inArray(tag, $scope.newsNew.tags)==-1){
@@ -244,71 +244,70 @@ app.controller("newsListEditCtrl", ["$scope","$location", "$http",  function($sc
 	$scope.newsNotOnMain=[];
 	var allNews={};
 
-	
+	function sortByKey(array, key) {
+		return array.sort(function(a, b) {
+			var x = a[key]; var y = b[key];
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		});
+	}
+	function sortNewsByPositions(news_list){
+		var withPositions={};
+		var withoutPositions=[];
+		var news=null;
+		var j=0;
+		var news_list_sorted=[];
+
+		for (var i = 0; i < news_list.length; i++) {
+			news=news_list[i];
+			if (news.position>-1){
+				withPositions[news.position]=news;
+			}
+			else{
+				withoutPositions.push(news);
+			}
+		};
+		for (var i = 0; i < news_list.length; i++) {
+			if (withPositions.hasOwnProperty(i)){
+				if (withPositions[i]!=undefined){
+					news_list_sorted.push(withPositions[i])
+				}
+			}
+			else{
+				if (withoutPositions[i]!=undefined){
+					news_list_sorted.push(withoutPositions[j]);
+					j+=1;
+				}
+			}
+		};
+		return news_list_sorted;
+	}
+
 	$http.get("/api/v1/private/news").
 		success(function(data, status, headers, config){
-			for (var obj in data){
-				console.log(obj);
-				
-			}
-			$scope.newsOnMain=data;
-			$scope.newsOnMainCopy=data;
-			$scope.newsNotOnMainCopy=[];
+			$scope.newsOnMain=[];
+			$scope.newsNotOnMain=[];
 			for (var i = 0; i < data.length; i++) {
 				allNews[data[i].id]=data[i];
+				if (data[i].isShowOnMain==true){
+					$scope.newsOnMain.push(data[i]);
+				}
+				else{
+					$scope.newsNotOnMain.push(data[i]);
+				}
 			};
-			var components = document.getElementById("newsWithPositions");
+			$scope.newsOnMain=sortNewsByPositions($scope.newsOnMain);
 
-			var w=$scope.$watch('newsOnMainCopy',function(){});
-			w();
-			w=$scope.$watch('newsNotOnMainCopy',function(){});
-			w();
+			var components = document.getElementById("newsWithPositions");
 
 			var sortable = Sortable.create(components, 
 										   {group:"news",
 											   sort: true,
 											   animation: 100,
-
-											   onEnd: function (/**Event*/evt) {
-												   // передвигаем компонент по окончанию
-												   // d&d.
-												   //
-												   /*
-												   components = self.objs[index].components;
-												   if (evt.newIndex==evt.oldIndex){
-													   return;
-												   }
-												   if (components.length>1){
-
-													   var component_new=components[evt.oldIndex];
-													   components.splice(evt.oldIndex, 1);
-													   components.splice(evt.newIndex, 0, component_new);
-													   self.objs[index].components=components;
-
-													   self.save();
-												   }
-												   */
-											   },
 											   // Element is dropped into the list from another list
 											   onAdd: function (/**Event*/evt) {
-												   var oldIndex=evt.oldIndex;
-												   var itemEl = evt.item;  // dragged HTMLElement
-												   evt.from;  // previous list
-												   console.log(evt.from);
-												   console.log(evt.from.dataset);
-												   
-													// revome object from $scope.newsNotOnMain
-												   //
-												   $scope.$apply(function(){
-														var obj=$scope.newsNotOnMain[oldIndex];
-														obj.isFeatured=false;
-														obj.showOnMain=false;
-														obj.position=-1;
-														//delete obj.$$hashKey;
-														//delete $scope.newsNotOnMain[oldIndex];
-														$scope.newsOnMain.push(obj);
-												   });											   
-												   // + indexes from onEnd
+												   //новость теперь может отображаться на главной
+												    var id=evt.item.getAttribute('data-id');
+													allNews[Number(id)].isShowOnMain=false;
 											   },
 			});
 			var components2 = document.getElementById("newsWithoutPositions");
@@ -317,48 +316,10 @@ app.controller("newsListEditCtrl", ["$scope","$location", "$http",  function($sc
 										   {group:"news",
 											   sort: true,
 											   animation: 100,
-
-											   onEnd: function (/**Event*/evt) {
-												   // передвигаем компонент по окончанию
-												   // d&d.
-												   //
-												   /*
-												   components = self.objs[index].components;
-												   if (evt.newIndex==evt.oldIndex){
-													   return;
-												   }
-												   if (components.length>1){
-
-													   var component_new=components[evt.oldIndex];
-													   components.splice(evt.oldIndex, 1);
-													   components.splice(evt.newIndex, 0, component_new);
-													   self.objs[index].components=components;
-
-													   self.save();
-												   }
-												   */
-											   },
 											   // Element is dropped into the list from another list
 											   onAdd: function (/**Event*/evt) {
-												   var oldIndex=evt.oldIndex;
-												   var itemEl = evt.item;  // dragged HTMLElement
-												   evt.from;  // previous list
-												   
-												   console.log(itemEl);
-												   console.log(evt.from);
-												   console.log(evt.from.dataset);
-												   
-												   // revome object from $scope.newsOnMain
-												   //
-												   $scope.$apply(function(){
-														var obj=$scope.newsOnMain[oldIndex];
-														obj.isFeatured=false;
-														obj.showOnMain=false;
-														obj.position=-1;
-														//delete $scope.newsOnMain[oldIndex];
-														//delete obj.$$hashKey;
-														$scope.newsNotOnMain.push(obj);
-												   });
+												    var id=evt.item.getAttribute('data-id');
+													allNews[Number(id)].isShowOnMain=true;
 											   },
 			});
 
@@ -371,6 +332,62 @@ app.controller("newsListEditCtrl", ["$scope","$location", "$http",  function($sc
 		else{
 			return 1;
 		}
+	}
+
+	$scope.saveAllNews = function(){
+		var newsOnMainLi=$("#newsWithPositions").find("li");
+		var newsForMainId=[];
+		var news=null;
+		var id=null;
+		//first of all find news id for main page:
+		for (var i = 0; i < newsOnMainLi.length; i++) {
+			id=newsOnMainLi[i].getAttribute('data-id');
+			newsForMainId.push(Number(id));
+		};
+		
+		// save news that was on main:
+		//
+		for (var i = 0; i < $scope.newsOnMain.length; i++) {
+			news=$scope.newsOnMain[i];
+			if (newsForMainId.indexOf(news.id)>-1){
+				// this news shown on main page
+				console.log("Show on main"+id);
+				news.isShowOnMain=true;
+				if (news.position>0){
+					news.position=newsForMainId.indexOf(news.id);
+				}
+			}
+			else{
+				news.isShowOnMain=false;
+				news.isFeatured=false;
+				news.position=-1;
+			}
+			$http.put("/api/v1/private/news/", news).
+				success(function(data, status, headers, config){
+			});
+		};
+		for (var i = 0; i < $scope.newsNotOnMain.length; i++) {
+			news=$scope.newsNotOnMain[i];
+			if (newsForMainId.indexOf(news.id)>-1){
+				// this news shown on main page
+				news.isShowOnMain=true;
+				if (news.position>0){
+					news.position=newsForMainId.indexOf(news.id);
+				}
+			}
+			else{
+				news.isShowOnMain=false;
+				news.isFeatured=false;
+				news.position=-1;
+			}
+			$http.put("/api/v1/private/news/", news).
+				success(function(data, status, headers, config){
+			});
+		};
+
+
+
+		
 	}
 
 }]);

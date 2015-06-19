@@ -31,7 +31,7 @@
 				<a  href="#/news/{{news_single.id}}"> </a>
 
 				<h5 ng-if="!news_single.small_img">
-					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<small class="time">[{{news_single.timestamp | date:'H:mm' }}]</small>
 					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
 				</h5>
 				<p ng-if="!news_single.small_img">
@@ -47,7 +47,7 @@
 			ng-show="settings.newsLayout === 'line'">
 			<div class="preview" ng-class="{'featured': news_single.isFeatured}">
 				<h5>
-					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<small class="time">[{{news_single.timestamp | date:'H:mm' }}]</small>
 					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
 				</h5>
 				<p>
@@ -62,7 +62,7 @@
 			ng-repeat="news_single in news_list">
 			<div class="preview" ng-class="{'featured': news_single.isFeatured}">
 				<h5>
-					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<small class="time">[{{news_single.timestamp | date:'H:mm' }}]</small>
 					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
 					<span class="glyphicon glyphicon-comment comment-count" 
 						ng-if="news_single.comments_count"
