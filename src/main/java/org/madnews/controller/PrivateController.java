@@ -127,7 +127,11 @@ public class PrivateController {
                 stream.write(bytes);
                 stream.close();
                 Map<String,String> imageLocation = new HashMap<>();
-                imageLocation.put("link", "media_files/" + file.getOriginalFilename());
+                imageLocation.put("link", "<div class=\"thumbnail\">\n" +
+                        "\n" +
+                        "<img src=\"media_files/to_img.jpg"+file.getOriginalFilename()+"\"/>\n" +
+                        "\n" +
+                        "</div>");
                 return new ResponseEntity<>(imageLocation, HttpStatus.OK);
             } catch (Exception e) {
             	Map<String,String> error = new HashMap<>();

@@ -77,8 +77,10 @@ public class Application extends RepositoryRestMvcConfiguration {
         @Override
         public void addViewControllers(ViewControllerRegistry registry) {
             registry.addViewController("/").setViewName("index");
+            registry.addViewController("/login.html").setViewName("login");
             registry.addViewController("/login").setViewName("login");
             registry.addViewController("/admin").setViewName("admin");
+            registry.addViewController("/admin.html").setViewName("admin");
             registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         }
     }
