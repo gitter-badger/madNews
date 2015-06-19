@@ -107,6 +107,33 @@ app.controller("searchByTagCtrl", ["$scope", "$http","$routeParams", "PageSettin
 }]);
 
 
+app.controller("archiveCtrl", ["$scope", "$http","$routeParams", "PageSettings",
+			   function($scope, $http, $routeParams, PageSettings) {
+	var pageN=$routeParams.pageN;
+	$scope.news_list=[];
+	$scope.settings=PageSettings;
+	$scope.page={};
+
+
+	$http.get("/api/v1/public/archive/").
+		success(function(data, status, headers, config){
+			$scope.tag=data;
+	});
+	var url='';
+	if (pageN){
+		url=url+"?page="+pageN;
+	}
+	$http.get("/api/v1/public/archive/"+url).
+		success(function(data, status, headers, config){
+			console.log(data);
+			$scope.news_list=data.content;
+			$scope.page=data.page;
+			$scope.page.pages=Array.apply(null, Array($scope.page.totalPages)).
+									map(function (_, i) {return i;});
+	});
+}]);
+
+
 
 
 app.controller("newsDetailCtrl", ["$scope", "$http", "$routeParams", "PageSettings", 
@@ -158,6 +185,14 @@ app.config(['$routeProvider',
         templateUrl: '/partials-html/search-by-tag.html',
         controller: 'searchByTagCtrl'
       }).
+      when('/archive', {
+        templateUrl: '/partials-html/archive.html',
+        controller: 'archiveCtrl'
+      }).
+      when('/archive/page/:pageN', {
+        templateUrl: '/partials-html/archive.html',
+        controller: 'archiveCtrl'
+      }).		  
       otherwise({
         redirectTo: '/'
       });

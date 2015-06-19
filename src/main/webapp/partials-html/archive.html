@@ -1,0 +1,88 @@
+<div class="row">
+	<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12" style="font-size:2em;"> 
+		<center>Archive</center>
+	</div>
+	<br>
+	<div id="newsBlock">
+
+		<div class="col-xs-4 col-md-3 news-preview hidden-xs news-grid-layout"
+			ng-repeat="news_single in news_list"
+			ng-show="settings.newsLayout === 'grid'">
+			<div class="preview">
+				<a  href="#/news/{{news_single.id}}"><img ng-if="news_single.small_img" src="{{news_single.small_img}}"> </a>
+				<h5 ng-if="news_single.small_img">
+					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
+					<span class="glyphicon glyphicon-comment comment-count" 
+						ng-if="news_single.comments_count"
+						aria-hidden="true">{{news_single.comments_count}}</span>
+				</h5>
+				<h5 ng-if="!news_single.small_img">
+					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
+				</h5>
+				<p ng-if="!news_single.small_img">
+				{{news_single.shortText  | cut:true:90 }}
+				<span class="glyphicon glyphicon-comment comment-count"
+					ng-if="news_single.comments_count"
+					aria-hidden="true">{{news_single.comments_count}}</span>
+				</p>
+			</div>
+		</div>
+		<div class="col-lg-8 col-lg-offset-2 news-preview-line hidden-xs news-line-layout"
+			ng-repeat="news_single in news_list"
+			ng-show="settings.newsLayout === 'line'">
+			<div class="preview">
+				<h5>
+					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
+				</h5>
+				<p>
+				{{news_single.shortText}}
+				<span class="glyphicon glyphicon-comment comment-count" 
+					ng-if="news_single.comments_count"
+					aria-hidden="true">{{news_single.comments_count}}</span>
+				</p>
+			</div>
+		</div>
+		<div class="col-xs-12 col-md-3 news-preview-xs visible-xs"
+			ng-repeat="news_single in news_list">
+			<div class="preview">
+				<h5>
+					<small class="time">[{{news_single.timestamp | date:'H:MM' }}]</small>
+					<a href="#/news/{{news_single.id}}">{{news_single.title}}</a>
+					<span class="glyphicon glyphicon-comment comment-count" 
+						ng-if="news_single.comments_count"
+						aria-hidden="true">{{news_single.comments_count}}</span>
+				</h5>
+			</div>
+		</div>
+
+
+
+	</div>
+	<div class="col-lg-8 col-lg-offset-2 news-preview-line news-line-layout">
+		<nav class="newsPagination">
+			<ul class="pagination">
+				<li>
+				<a href="#/archive/page/{{page.number-1}}" aria-label="Previous"
+					ng-class="{'disabled':page.number==0}">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+				</li>
+				<li ng-repeat="n in page.pages">
+				<a href="#/archive/page/{{n}}"
+					ng-class="{'active':n==page.number}">
+					{{n+1}}
+				</a>
+				</li>
+				<li>
+				<a href="#/archive/page/{{page.number+1}}" aria-label="Next"
+					ng-class="{'disabled':page.number+1==page.totalPages}">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
